@@ -1,902 +1,2655 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>لوحة إدارة المعرفة — جمعية تراؤف</title>
+<title>لوحة القيادة المؤسسية - جمعية تراؤف لرعاية الأيتام</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --P:#1a6b55;--PD:#0d3d2e;--PL:#2aaa7a;--PB:#eaf5f0;
-  --AC:#f0a500;--TX:#1a2a22;--TM:#5a7a6a;--BR:#d0e8da;
-  --BG:#f3f8f5;--SW:264px;--DG:#d94040;--OK:#2aaa7a;--WN:#e09000;
-}
-body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--BG);color:var(--TX);display:flex;min-height:100vh}
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap');
+  
+  :root {
+    --primary: #0d2137;
+    --primary-light: #1a3a5c;
+    --accent: #c8922a;
+    --accent-light: #e6a93a;
+    --bg: #f0f4f8;
+    --card-bg: #ffffff;
+    --text: #0d2137;
+    --text-muted: #5a7a9a;
+    --border: #d0dce8;
+    --excellent: #16a34a;
+    --excellent-bg: #dcfce7;
+    --good: #d97706;
+    --good-bg: #fef3c7;
+    --weak: #dc2626;
+    --weak-bg: #fee2e2;
+    --pending: #64748b;
+    --pending-bg: #f1f5f9;
+    --shadow: 0 2px 12px rgba(13,33,55,0.10);
+    --shadow-lg: 0 8px 32px rgba(13,33,55,0.15);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
 
-/* SIDEBAR */
-.sidebar{width:var(--SW);background:var(--PD);position:fixed;height:100vh;right:0;top:0;display:flex;flex-direction:column;overflow-y:auto;z-index:100;box-shadow:-2px 0 16px rgba(0,0,0,.25)}
-.sb-head{padding:18px 14px 14px;border-bottom:1px solid rgba(255,255,255,.1)}
-.sb-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.sb-icon{width:40px;height:40px;background:var(--PL);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.sb-org{font-size:13px;font-weight:800;color:#fff;line-height:1.3}
-.sb-sub{font-size:10px;color:rgba(255,255,255,.45);margin-top:2px}
-.sb-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.sm{background:rgba(255,255,255,.08);border-radius:8px;padding:9px 8px;text-align:center}
-.sm .v{font-size:22px;font-weight:900;color:var(--PL)}
-.sm .l{font-size:9px;color:rgba(255,255,255,.45);margin-top:1px}
-.sb-section{padding:10px 8px 4px}
-.sb-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:1.5px;padding:0 8px;margin-bottom:5px;display:block}
-.nav-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:9px;cursor:pointer;transition:all .2s;margin-bottom:2px;font-size:12.5px;color:rgba(255,255,255,.65)}
-.nav-item:hover{background:rgba(255,255,255,.08);color:#fff}
-.nav-item.active{background:var(--PL);color:#fff;font-weight:700;box-shadow:0 4px 12px rgba(42,170,122,.3)}
-.nav-item .ni{font-size:15px;flex-shrink:0}
-.nav-item .nb{margin-right:auto;background:rgba(255,255,255,.18);border-radius:10px;padding:1px 7px;font-size:10px}
-.nav-item.active .nb{background:rgba(0,0,0,.2)}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'IBM Plex Sans Arabic', 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    min-height: 100vh;
+  }
 
-/* MAIN */
-.main{margin-right:var(--SW);flex:1;display:flex;flex-direction:column;min-height:100vh}
-.topbar{background:#fff;border-bottom:1px solid var(--BR);padding:13px 26px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(0,0,0,.05)}
-.tb-left{}
-.tb-title{font-size:16px;font-weight:800;color:var(--PD)}
-.tb-sub{font-size:11px;color:var(--TM);margin-top:2px}
-.tb-right{display:flex;gap:8px;align-items:center}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:inherit}
-.btn-p{background:var(--P);color:#fff}.btn-p:hover{background:var(--PD)}
-.btn-o{background:transparent;color:var(--P);border:1.5px solid var(--P)}.btn-o:hover{background:var(--PB)}
-.btn-d{background:#fff0f0;color:var(--DG);border:1.5px solid var(--DG)}.btn-d:hover{background:#ffe0e0}
+  /* ===== HEADER ===== */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.25);
+  }
+  .header-brand { display: flex; align-items: center; gap: 14px; }
+  .header-logo {
+    width: 44px; height: 44px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 700; color: white;
+  }
+  .header-title { font-size: 15px; font-weight: 600; line-height: 1.3; }
+  .header-subtitle { font-size: 11px; opacity: 0.75; margin-top: 2px; }
+  .header-meta { display: flex; align-items: center; gap: 20px; font-size: 12px; opacity: 0.85; }
+  .header-badge {
+    background: var(--accent);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .header-prepared { font-size: 11px; opacity: 0.7; text-align: left; }
 
-.content{padding:22px 26px;flex:1}
+  /* ===== TABS ===== */
+  .tabs-bar {
+    background: var(--primary);
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-bottom: 3px solid var(--accent);
+    position: sticky;
+    top: 64px;
+    z-index: 90;
+  }
+  .tabs-bar::-webkit-scrollbar { display: none; }
+  .tabs-list {
+    display: flex;
+    min-width: max-content;
+    padding: 0 16px;
+  }
+  .tab-btn {
+    padding: 12px 16px;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.65);
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -3px;
+    position: relative;
+  }
+  .tab-btn:hover { color: white; background: rgba(255,255,255,0.08); }
+  .tab-btn.active {
+    color: var(--accent-light);
+    border-bottom-color: var(--accent-light);
+    font-weight: 600;
+    background: rgba(255,255,255,0.05);
+  }
 
-/* PAGES */
-.page{display:none}.page.active{display:block}
+  /* ===== PAGES ===== */
+  .page { display: none; padding: 24px; max-width: 1400px; margin: 0 auto; }
+  .page.active { display: block; }
 
-/* SECTION HEADER */
-.sec-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap}
-.sec-title{font-size:19px;font-weight:800;color:var(--PD);margin-bottom:5px}
-.sec-chips{display:flex;gap:8px;flex-wrap:wrap}
-.chip{display:inline-flex;align-items:center;gap:4px;background:var(--PB);border:1px solid var(--BR);border-radius:20px;padding:4px 10px;font-size:11px;color:var(--P);font-weight:600}
+  /* ===== FOOTER ===== */
+  .footer {
+    background: var(--primary);
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    padding: 14px 24px;
+    font-size: 12px;
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
-/* OVERVIEW STATS */
-.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:22px}
-.ov-card{background:#fff;border-radius:13px;padding:16px 18px;border:1px solid var(--BR);box-shadow:0 2px 8px rgba(0,0,0,.04)}
-.ov-lbl{font-size:10.5px;color:var(--TM);font-weight:700;letter-spacing:.5px;margin-bottom:8px;text-transform:uppercase}
-.ov-val{font-size:30px;font-weight:900;color:var(--PD);line-height:1;margin-bottom:7px}
-.ov-bar{height:5px;background:var(--PB);border-radius:3px;overflow:hidden}
-.ov-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--P),var(--PL));transition:width .5s}
+  /* ===== SECTION TITLES ===== */
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-title .icon { font-size: 20px; }
+  .sub-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--primary-light);
+    margin: 20px 0 12px;
+    padding-right: 10px;
+    border-right: 3px solid var(--accent);
+  }
 
-/* ACCORDION */
-.acc{background:#fff;border-radius:13px;border:1px solid var(--BR);margin-bottom:12px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.04)}
-.acc-hdr{display:flex;align-items:center;padding:14px 18px;cursor:pointer;gap:10px;border-bottom:1px solid transparent;transition:all .2s}
-.acc-hdr:hover{background:var(--BG)}
-.acc.open .acc-hdr{border-bottom-color:var(--BR);background:var(--PB)}
-.acc-ico{width:32px;height:32px;background:var(--PB);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;transition:background .2s}
-.acc.open .acc-ico{background:var(--P)}
-.acc-ttl{flex:1;font-size:13.5px;font-weight:700;color:var(--PD)}
-.acc-prog{font-size:11px;font-weight:700;color:var(--P);background:var(--PB);border-radius:20px;padding:2px 9px;white-space:nowrap}
-.acc.open .acc-prog{background:rgba(42,170,122,.15)}
-.chevron{font-size:11px;color:var(--TM);transition:transform .3s}
-.acc.open .chevron{transform:rotate(180deg)}
-.acc-body{display:none;overflow-x:auto}
-.acc.open .acc-body{display:block}
+  /* ===== GRID ===== */
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .grid-7 { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
 
-/* TABLE */
-.steps-tbl{width:100%;border-collapse:collapse;min-width:700px}
-.steps-tbl th{background:#f5f9f7;padding:9px 12px;font-size:10.5px;font-weight:700;color:var(--TM);text-align:right;border-bottom:1px solid var(--BR);white-space:nowrap}
-.steps-tbl td{padding:9px 12px;font-size:12px;border-bottom:1px solid var(--BR);vertical-align:middle}
-.steps-tbl tr:last-child td{border-bottom:none}
-.steps-tbl tr:hover td{background:#f7fbf9}
-.snum{width:28px;height:28px;background:var(--PB);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--P)}
-.sttl{font-weight:600;max-width:260px;line-height:1.4}
-.sresp{color:var(--TM);font-size:11px;line-height:1.4;max-width:160px}
-.stime{font-size:10.5px;background:#f0f4f2;border-radius:5px;padding:3px 7px;white-space:nowrap;color:var(--TM)}
-.schn{font-size:10.5px;color:var(--TM)}
+  @media (max-width: 900px) {
+    .grid-4, .grid-5, .grid-7 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  }
 
-/* STATUS SELECT */
-.ssel{border:1.5px solid var(--BR);border-radius:7px;padding:4px 8px;font-size:11px;font-family:inherit;cursor:pointer;outline:none;transition:all .2s;background:#fff;min-width:108px}
-.ssel:focus{border-color:var(--P)}
-.ssel.s0{color:#888}
-.ssel.s1{border-color:var(--WN);color:#8a5f00;background:#fffbe8}
-.ssel.s2{border-color:var(--PL);color:var(--P);background:#eaf5f0}
-.ssel.s3{border-color:var(--DG);color:var(--DG);background:#fff0f0}
+  /* ===== KPI CARDS ===== */
+  .kpi-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: all 0.25s;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .kpi-card:hover { border-color: var(--accent); }
+  .kpi-card.excellent { border-right: 4px solid var(--excellent); }
+  .kpi-card.good { border-right: 4px solid var(--good); }
+  .kpi-card.weak { border-right: 4px solid var(--weak); }
+  .kpi-card.pending { border-right: 4px solid var(--pending); }
+  
+  .kpi-label { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; font-weight: 500; }
+  .kpi-value { font-size: 28px; font-weight: 700; line-height: 1; }
+  .kpi-sub { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+  .kpi-badge {
+    display: inline-block; padding: 3px 10px; border-radius: 20px;
+    font-size: 11px; font-weight: 600; margin-top: 8px;
+  }
+  .badge-excellent { background: var(--excellent-bg); color: var(--excellent); }
+  .badge-good { background: var(--good-bg); color: var(--good); }
+  .badge-weak { background: var(--weak-bg); color: var(--weak); }
+  .badge-pending { background: var(--pending-bg); color: var(--pending); }
 
-.ni{border:1.5px solid var(--BR);border-radius:7px;padding:4px 8px;font-size:11px;font-family:inherit;width:100%;min-width:130px;outline:none;resize:none;height:30px;overflow:hidden;transition:all .2s}
-.ni:focus{border-color:var(--P);height:52px}
+  /* ===== BIG KPI ===== */
+  .big-kpi {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+  }
+  .big-kpi-value { font-size: 52px; font-weight: 700; line-height: 1; }
+  .big-kpi-label { font-size: 14px; opacity: 0.85; margin-top: 8px; }
+  .big-kpi-sub { font-size: 12px; opacity: 0.65; margin-top: 6px; }
 
-/* KPI */
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;margin-bottom:20px}
-.kpi-card{background:#fff;border-radius:13px;border:1px solid var(--BR);padding:16px 18px;box-shadow:0 2px 6px rgba(0,0,0,.04)}
-.kpi-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;gap:8px}
-.kpi-ttl{font-size:12.5px;font-weight:700;color:var(--TX);line-height:1.4}
-.kpi-badge{font-size:9.5px;background:var(--PB);color:var(--P);border-radius:5px;padding:2px 7px;font-weight:700;white-space:nowrap;flex-shrink:0}
-.kpi-nums{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
-.kpi-cur{font-size:26px;font-weight:900;color:var(--PD)}
-.kpi-unit{font-size:13px;color:var(--TM);margin-right:2px}
-.kpi-tgt{font-size:11px;color:var(--TM)}
-.kpi-bar{height:7px;background:var(--PB);border-radius:4px;overflow:hidden;margin-bottom:10px}
-.kpi-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--P),var(--PL));transition:width .5s}
-.kpi-fill.warn{background:linear-gradient(90deg,var(--WN),#ffc840)}
-.kpi-fill.danger{background:linear-gradient(90deg,var(--DG),#ff8888)}
-.kpi-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.ktag{font-size:10px;color:var(--TM);background:#f5f9f7;border-radius:5px;padding:2px 7px}
-.kpi-edit{display:flex;align-items:center;gap:8px}
-.kpi-lbl{font-size:10.5px;color:var(--TM);white-space:nowrap}
-.kpi-inp{border:1.5px solid var(--BR);border-radius:7px;padding:5px 8px;font-size:13px;font-weight:700;font-family:inherit;width:80px;outline:none;text-align:center;color:var(--PD);transition:border-color .2s}
-.kpi-inp:focus{border-color:var(--P)}
+  /* ===== ANALYSIS PANEL ===== */
+  .analysis-panel {
+    display: none;
+    background: #f8fafc;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    margin-top: 12px;
+    position: relative;
+    animation: slideDown 0.2s ease;
+  }
+  .analysis-panel.open { display: block; }
+  @keyframes slideDown { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
+  .analysis-panel .close-btn {
+    position: absolute; top: 10px; left: 10px;
+    background: var(--weak); color: white; border: none;
+    width: 24px; height: 24px; border-radius: 50%; cursor: pointer; font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .analysis-panel .close-btn:hover { background: #b91c1c; }
+  .analysis-item { display: flex; gap: 10px; margin-bottom: 8px; font-size: 13px; }
+  .analysis-item .label { color: var(--text-muted); min-width: 120px; font-weight: 500; }
+  .analysis-item .value { color: var(--text); flex: 1; }
 
-/* RISK TABLE */
-.risk-wrap{background:#fff;border-radius:13px;border:1px solid var(--BR);overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.04);margin-bottom:20px}
-.risk-tbl{width:100%;border-collapse:collapse;min-width:600px}
-.risk-tbl th{background:var(--PD);color:#fff;padding:11px 14px;font-size:11px;font-weight:700;text-align:right}
-.risk-tbl td{padding:10px 14px;font-size:12px;border-bottom:1px solid var(--BR);vertical-align:top;line-height:1.5}
-.risk-tbl tr:last-child td{border-bottom:none}
-.risk-tbl tr:hover td{background:var(--BG)}
-.rl{display:inline-block;padding:2px 9px;border-radius:20px;font-size:10.5px;font-weight:700}
-.rl.h{background:#fff0f0;color:var(--DG)}
-.rl.m{background:#fffbe8;color:#8a5f00}
-.rl.l{background:var(--PB);color:var(--P)}
-.opp-badge{background:#eaf5f0;color:var(--PL);border-radius:5px;padding:2px 7px;font-size:10px;font-weight:700}
+  /* ===== CHART CONTAINER ===== */
+  .chart-box {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+  }
+  .chart-title { font-size: 14px; font-weight: 600; margin-bottom: 16px; color: var(--primary); }
+  .chart-wrap { position: relative; height: 260px; }
+  .chart-wrap-sm { position: relative; height: 200px; }
+  .chart-wrap-lg { position: relative; height: 320px; }
 
-/* GUIDE */
-.guide-card{background:#fff;border-radius:13px;border:1px solid var(--BR);margin-bottom:14px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.04)}
-.guide-hdr{background:var(--PB);border-bottom:1px solid var(--BR);padding:13px 18px;display:flex;align-items:center;gap:10px}
-.guide-htitle{font-size:13.5px;font-weight:700;color:var(--PD)}
-.guide-body{padding:15px 18px;font-size:12.5px;color:var(--TX);line-height:1.75}
-.guide-body ul{margin-right:18px;margin-top:6px}
-.guide-body li{margin-bottom:4px}
-.guide-body .highlight{background:var(--PB);border-right:3px solid var(--PL);border-radius:6px;padding:8px 12px;margin:10px 0;font-size:12px}
+  /* ===== TABLE ===== */
+  .data-table {
+    width: 100%; border-collapse: collapse;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    font-size: 13px;
+  }
+  .data-table th {
+    background: var(--primary);
+    color: white;
+    padding: 12px 14px;
+    text-align: right;
+    font-weight: 600;
+    font-size: 12px;
+  }
+  .data-table td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: #f8fafd; }
+  .data-table tr.clickable { cursor: pointer; }
 
-/* TOAST */
-.toast{position:fixed;bottom:22px;left:22px;background:var(--PD);color:#fff;padding:10px 18px;border-radius:9px;font-size:12.5px;font-weight:600;opacity:0;transform:translateY(8px);transition:all .3s;z-index:999;box-shadow:0 4px 18px rgba(0,0,0,.3);pointer-events:none}
-.toast.show{opacity:1;transform:translateY(0)}
+  /* ===== STATUS DOTS ===== */
+  .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-left: 6px; }
+  .dot-excellent { background: var(--excellent); }
+  .dot-good { background: var(--good); }
+  .dot-weak { background: var(--weak); }
+  .dot-pending { background: var(--pending); }
 
-/* DIVIDER */
-.divider{height:1px;background:var(--BR);margin:20px 0}
-.section-sub{font-size:12px;color:var(--TM);font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.section-sub::after{content:'';flex:1;height:1px;background:var(--BR)}
+  /* ===== PROGRESS BAR ===== */
+  .progress-bar-wrap { background: #e5eaf0; border-radius: 6px; height: 10px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; border-radius: 6px; transition: width 1s ease; }
+  .fill-excellent { background: var(--excellent); }
+  .fill-good { background: var(--good); }
+  .fill-weak { background: var(--weak); }
 
-@media print{.sidebar,.tb-right,.btn{display:none!important}.main{margin-right:0}}
+  /* ===== COVER PAGE ===== */
+  .cover-page {
+    min-height: calc(100vh - 130px);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: linear-gradient(160deg, var(--primary) 0%, var(--primary-light) 60%, #1e4a7a 100%);
+    border-radius: var(--radius);
+    color: white;
+    text-align: center;
+    padding: 60px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover-page::before {
+    content: '';
+    position: absolute;
+    top: -40%; right: -20%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(200,146,42,0.18) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .cover-logo {
+    width: 100px; height: 100px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 48px; font-weight: 700;
+    margin: 0 auto 28px;
+    box-shadow: 0 8px 32px rgba(200,146,42,0.4);
+  }
+  .cover-title { font-size: 32px; font-weight: 700; margin-bottom: 12px; }
+  .cover-org { font-size: 20px; opacity: 0.9; margin-bottom: 20px; }
+  .cover-period {
+    background: var(--accent);
+    color: white;
+    padding: 8px 24px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: inline-block;
+  }
+  .cover-desc { font-size: 14px; opacity: 0.75; max-width: 600px; line-height: 1.7; margin-bottom: 32px; }
+  .cover-meta { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
+  .cover-meta-item { font-size: 13px; opacity: 0.8; }
+  .cover-meta-item strong { display: block; font-size: 15px; opacity: 1; }
+  .cover-version {
+    position: absolute;
+    top: 20px; left: 20px;
+    background: rgba(255,255,255,0.15);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+  }
+
+  /* ===== ALERT BOXES ===== */
+  .alert { border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: 8px; font-size: 13px; }
+  .alert-info { background: #eff6ff; border-right: 3px solid #3b82f6; color: #1e40af; }
+  .alert-warn { background: #fffbeb; border-right: 3px solid var(--good); color: #92400e; }
+  .alert-danger { background: var(--weak-bg); border-right: 3px solid var(--weak); color: #991b1b; }
+  .alert-success { background: var(--excellent-bg); border-right: 3px solid var(--excellent); color: #14532d; }
+
+  /* ===== COLOR KEY ===== */
+  .color-key {
+    display: flex; flex-wrap: wrap; gap: 12px;
+    background: var(--card-bg); border-radius: var(--radius-sm);
+    padding: 12px 16px; margin-bottom: 20px;
+    box-shadow: var(--shadow);
+  }
+  .color-key-item { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+  .color-key-dot { width: 14px; height: 14px; border-radius: 4px; }
+
+  /* ===== RISK MAP ===== */
+  .risk-map {
+    display: grid;
+    grid-template-columns: 40px repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr) 40px;
+    gap: 3px;
+    height: 280px;
+    margin-bottom: 12px;
+  }
+  .risk-cell {
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600;
+    cursor: pointer; transition: opacity 0.2s;
+  }
+  .risk-cell:hover { opacity: 0.85; }
+  .risk-axis { display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--text-muted); font-weight: 600; }
+  .risk-axis-v { writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); }
+
+  /* ===== DIMENSION CARD ===== */
+  .dim-card {
+    background: var(--card-bg); border-radius: var(--radius);
+    padding: 20px; box-shadow: var(--shadow);
+    cursor: pointer; transition: all 0.25s;
+    border-top: 4px solid var(--border);
+  }
+  .dim-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+  .dim-card.excellent { border-top-color: var(--excellent); }
+  .dim-card.good { border-top-color: var(--good); }
+  .dim-card.weak { border-top-color: var(--weak); }
+  .dim-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .dim-value { font-size: 32px; font-weight: 700; }
+  .dim-goals { font-size: 12px; color: var(--text-muted); margin-top: 8px; }
+
+  /* ===== GAUGE ===== */
+  .gauge-wrap { position: relative; width: 160px; margin: 0 auto; }
+  .gauge-wrap canvas { display: block; }
+  .gauge-text { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); text-align: center; }
+  .gauge-val { font-size: 24px; font-weight: 700; display: block; }
+  .gauge-lbl { font-size: 11px; color: var(--text-muted); }
+
+  /* ===== INFO CARD ===== */
+  .info-card {
+    background: var(--card-bg); border-radius: var(--radius);
+    padding: 16px; box-shadow: var(--shadow);
+  }
+
+  /* ===== BACK BTN ===== */
+  .back-btn {
+    background: var(--primary); color: white;
+    border: none; border-radius: var(--radius-sm);
+    padding: 8px 18px; font-size: 13px; font-family: inherit;
+    cursor: pointer; margin-bottom: 16px;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: background 0.2s;
+  }
+  .back-btn:hover { background: var(--accent); }
+
+  /* ===== TOGGLE DETAIL ===== */
+  .toggle-detail { cursor: pointer; }
+  .toggle-detail .toggle-icon { transition: transform 0.2s; display: inline-block; }
+  .toggle-detail.open .toggle-icon { transform: rotate(180deg); }
+
+  /* ===== ROWS ===== */
+  .row { display: flex; gap: 16px; margin-bottom: 16px; }
+  .row > * { flex: 1; }
+  .row .w2 { flex: 2; }
+  .row .w3 { flex: 3; }
+
+  /* ===== TABS CONTENT ===== */
+  .card { background: var(--card-bg); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 16px; }
+  .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .card-header-title { font-size: 15px; font-weight: 700; color: var(--primary); }
+
+  /* ===== INTEGRATION MATRIX ===== */
+  .integration-row { cursor: pointer; }
+  .integration-detail { display: none; background: #f8fafc; }
+  .integration-detail.open { display: table-row; }
+  .integration-detail td { padding: 12px 14px 16px; }
+
+  /* map/connections visual */
+  .perf-map { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .map-node {
+    background: var(--card-bg); border-radius: var(--radius-sm);
+    padding: 14px; box-shadow: var(--shadow);
+    text-align: center; cursor: pointer; transition: all 0.2s;
+    border: 2px solid transparent;
+  }
+  .map-node:hover { border-color: var(--accent); transform: scale(1.02); }
+  .map-node .node-icon { font-size: 24px; margin-bottom: 6px; }
+  .map-node .node-title { font-size: 12px; font-weight: 600; }
+  .map-node .node-val { font-size: 20px; font-weight: 700; margin-top: 4px; }
+
+  /* ===== PRIORITY BADGES ===== */
+  .priority-high { background: #fee2e2; color: #991b1b; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .priority-med { background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .priority-low { background: #dcfce7; color: #14532d; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+
+  .btn-primary {
+    background: var(--accent); color: white; border: none;
+    padding: 8px 18px; border-radius: var(--radius-sm); font-family: inherit;
+    font-size: 13px; cursor: pointer; font-weight: 600; transition: background 0.2s;
+  }
+  .btn-primary:hover { background: #b07a20; }
+
+  .tag {
+    display: inline-block; padding: 3px 8px; border-radius: 10px;
+    font-size: 11px; font-weight: 600;
+  }
+
+  /* Data source status */
+  .status-linked { background: #dcfce7; color: #14532d; }
+  .status-update { background: #fef3c7; color: #92400e; }
+  .status-incomplete { background: #fee2e2; color: #991b1b; }
+  .status-unavail { background: #f1f5f9; color: #475569; }
+
+  .mb-4 { margin-bottom: 16px; }
+  .mb-8 { margin-bottom: 32px; }
+  .mt-4 { margin-top: 16px; }
+  .text-center { text-align: center; }
+  .text-muted { color: var(--text-muted); }
+  .text-small { font-size: 12px; }
+  .font-bold { font-weight: 700; }
+  .flex { display: flex; }
+  .gap-2 { gap: 8px; }
+  .items-center { align-items: center; }
+  .justify-between { justify-content: space-between; }
+
+  /* ===== PRINT ===== */
+  @media print {
+    .tabs-bar, .back-btn { display: none; }
+    .page { display: block !important; page-break-after: always; }
+  }
 </style>
 </head>
 <body>
 
-<!-- ═══════════ SIDEBAR ═══════════ -->
-<div class="sidebar">
-  <div class="sb-head">
-    <div class="sb-logo">
-      <div class="sb-icon">📚</div>
-      <div>
-        <div class="sb-org">جمعية تراؤف</div>
-        <div class="sb-sub">قسم إدارة المعرفة المؤسسي</div>
+<!-- HEADER -->
+<header class="header">
+  <div class="header-brand">
+    <div class="header-logo">ت</div>
+    <div>
+      <div class="header-title">لوحة القيادة المؤسسية — جمعية تراؤف لرعاية الأيتام</div>
+      <div class="header-subtitle">الربع الأول من عام 2026م | الأداء الاستراتيجي والتشغيلي والمالي والمخاطر</div>
+    </div>
+  </div>
+  <div class="header-meta">
+    <div>
+      <div class="header-prepared">الجهة المعدة</div>
+      <div style="font-size:13px;font-weight:600">إدارة مركز قياس الأداء</div>
+    </div>
+    <span class="header-badge">Q1 2026</span>
+  </div>
+</header>
+
+<!-- TABS -->
+<nav class="tabs-bar">
+  <div class="tabs-list">
+    <button class="tab-btn active" onclick="showTab('cover')">🏠 الغلاف</button>
+    <button class="tab-btn" onclick="showTab('summary')">📊 الملخص التنفيذي</button>
+    <button class="tab-btn" onclick="showTab('map')">🗺️ خريطة الأداء</button>
+    <button class="tab-btn" onclick="showTab('strategic')">🎯 الأداء الاستراتيجي</button>
+    <button class="tab-btn" onclick="showTab('operational')">⚙️ الأداء التشغيلي</button>
+    <button class="tab-btn" onclick="showTab('hrperf')">👥 الأداء الوظيفي</button>
+    <button class="tab-btn" onclick="showTab('risks')">⚠️ أداء المخاطر</button>
+    <button class="tab-btn" onclick="showTab('financial')">💰 الأداء المالي</button>
+    <button class="tab-btn" onclick="showTab('governance')">🏛️ أداء الحوكمة</button>
+    <button class="tab-btn" onclick="showTab('excellence')">🏆 التميز المؤسسي</button>
+    <button class="tab-btn" onclick="showTab('integration')">🔗 القراءة التكاملية</button>
+    <button class="tab-btn" onclick="showTab('decisions')">📋 القرارات والتوصيات</button>
+    <button class="tab-btn" onclick="showTab('datasources')">🗄️ مصادر البيانات</button>
+    <button class="tab-btn" onclick="showTab('attachments')">📎 المرفقات</button>
+  </div>
+</nav>
+
+<!-- ================================================================ -->
+<!-- PAGE: COVER -->
+<!-- ================================================================ -->
+<div id="page-cover" class="page active">
+  <div class="cover-page">
+    <div class="cover-version">النسخة 1.0 — مسودة</div>
+    <div class="cover-logo">ت</div>
+    <div class="cover-title">لوحة القيادة المؤسسية لمجلس الإدارة</div>
+    <div class="cover-org">جمعية تراؤف لرعاية الأيتام بمحافظة حفر الباطن</div>
+    <div class="cover-period">الربع الأول من عام 2026م</div>
+    <div class="cover-desc">
+      قراءة تنفيذية موحدة للأداء الاستراتيجي والتشغيلي والوظيفي والمالي والمخاطر والحوكمة والتميز المؤسسي، مُعدَّة لعرضها أمام مجلس الإدارة لدعم اتخاذ القرار المؤسسي الرشيد.
+    </div>
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <strong>إدارة مركز قياس الأداء</strong>
+        الجهة المعدة
       </div>
-    </div>
-    <div class="sb-stats">
-      <div class="sm"><div class="v" id="stat-done">0</div><div class="l">مكتملة</div></div>
-      <div class="sm"><div class="v" id="stat-prog">0</div><div class="l">قيد التنفيذ</div></div>
-      <div class="sm"><div class="v" id="stat-total">0</div><div class="l">إجمالي الخطوات</div></div>
-      <div class="sm"><div class="v" id="stat-pct">0%</div><div class="l">نسبة الإنجاز</div></div>
-    </div>
-  </div>
-
-  <div class="sb-section">
-    <span class="sb-lbl">الصفحات الرئيسية</span>
-    <div class="nav-item active" data-page="overview" onclick="showPage(this)">
-      <span class="ni">📊</span> نظرة عامة
-    </div>
-  </div>
-
-  <div class="sb-section">
-    <span class="sb-lbl">الإجراءات</span>
-    <div class="nav-item" data-page="p207" onclick="showPage(this)">
-      <span class="ni">🏛</span> إجراء 207 — داخلي
-      <span class="nb" id="nb-207">0%</span>
-    </div>
-    <div class="nav-item" data-page="p208" onclick="showPage(this)">
-      <span class="ni">🌐</span> إجراء 208 — خارجي
-      <span class="nb" id="nb-208">0%</span>
-    </div>
-  </div>
-
-  <div class="sb-section">
-    <span class="sb-lbl">الدليل والأداء</span>
-    <div class="nav-item" data-page="kpis" onclick="showPage(this)">
-      <span class="ni">📈</span> مؤشرات الأداء KPIs
-    </div>
-    <div class="nav-item" data-page="risks" onclick="showPage(this)">
-      <span class="ni">⚠️</span> المخاطر والفرص
-    </div>
-    <div class="nav-item" data-page="guide" onclick="showPage(this)">
-      <span class="ni">📖</span> دليل النظام ISO
+      <div class="cover-meta-item">
+        <strong>28 أبريل 2026م</strong>
+        تاريخ الإصدار
+      </div>
+      <div class="cover-meta-item">
+        <strong>مجلس الإدارة</strong>
+        الجهة المستهدفة
+      </div>
+      <div class="cover-meta-item">
+        <strong>90.1% — ممتاز</strong>
+        الأداء الاستراتيجي العام
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════ MAIN ═══════════ -->
-<div class="main">
-  <div class="topbar">
-    <div class="tb-left">
-      <div class="tb-title" id="top-title">نظرة عامة</div>
-      <div class="tb-sub" id="top-sub">لوحة مراقبة إدارة المعرفة المؤسسي</div>
+<!-- ================================================================ -->
+<!-- PAGE: EXECUTIVE SUMMARY -->
+<!-- ================================================================ -->
+<div id="page-summary" class="page">
+  <div class="section-title"><span class="icon">📊</span> الملخص التنفيذي — الربع الأول 2026م</div>
+  <div class="text-small text-muted mb-4" style="margin-bottom:12px">إدارة مركز قياس الأداء | جمعية تراؤف لرعاية الأيتام بمحافظة حفر الباطن</div>
+
+  <!-- Color Key -->
+  <div class="color-key">
+    <strong style="font-size:12px">مفتاح الألوان المعتمد:</strong>
+    <div class="color-key-item"><div class="color-key-dot" style="background:var(--excellent)"></div><span>ممتاز (90%-100%)</span></div>
+    <div class="color-key-item"><div class="color-key-dot" style="background:var(--good)"></div><span>جيد (70%-89%)</span></div>
+    <div class="color-key-item"><div class="color-key-dot" style="background:var(--weak)"></div><span>ضعيف (أقل من 70%)</span></div>
+    <div class="color-key-item"><div class="color-key-dot" style="background:var(--pending)"></div><span>لم يحن دورية القياس</span></div>
+  </div>
+
+  <!-- Overall Indicator -->
+  <div class="row mb-4">
+    <div class="big-kpi" style="flex:1.5;text-align:center">
+      <div class="big-kpi-value" style="color:var(--accent-light)">90.1%</div>
+      <div class="big-kpi-label">مؤشر الأداء الاستراتيجي العام</div>
+      <div class="big-kpi-sub">26 هدفاً استراتيجياً | 49 مؤشراً | الربع الأول 2026م</div>
+      <div style="margin-top:10px"><span class="badge-excellent kpi-badge">✓ ممتاز</span></div>
     </div>
-    <div class="tb-right">
-      <button class="btn btn-o" onclick="resetAll()">🔄 إعادة تعيين</button>
-      <button class="btn btn-p" onclick="saveAll()">💾 حفظ البيانات</button>
-      <button class="btn btn-o" onclick="window.print()">🖨 طباعة</button>
+    <div style="flex:3">
+      <div class="grid-3" style="gap:12px">
+        <div class="kpi-card excellent" onclick="toggleAnalysis('sum-strat')">
+          <div class="kpi-label">الأداء الاستراتيجي</div>
+          <div class="kpi-value" style="color:var(--excellent)">90.1%</div>
+          <span class="kpi-badge badge-excellent">ممتاز</span>
+          <div class="kpi-sub">26 هدف | 49 مؤشر</div>
+          <div class="analysis-panel" id="sum-strat">
+            <button class="close-btn" onclick="event.stopPropagation();toggleAnalysis('sum-strat')">✕</button>
+            <div class="analysis-item"><span class="label">نتيجة الأداء:</span><span class="value">90.1% — ممتاز، ارتفاع من 83.8% في الربع الرابع 2025</span></div>
+            <div class="analysis-item"><span class="label">الأبعاد الممتازة:</span><span class="value">4 أبعاد: أصحاب المصلحة (100%)، المالي (99.9%)، التعلم والنمو (93.9%)، العمليات (93.7%)</span></div>
+            <div class="analysis-item"><span class="label">البعد الأدنى:</span><span class="value">المستفيدون (81.3%) — يحتاج تطوير</span></div>
+          </div>
+        </div>
+        <div class="kpi-card good" onclick="toggleAnalysis('sum-ops')">
+          <div class="kpi-label">الأداء التشغيلي</div>
+          <div class="kpi-value" style="color:var(--good)">83.6%</div>
+          <span class="kpi-badge badge-good">جيد</span>
+          <div class="kpi-sub">14 إدارة | 86.8% مبادرات</div>
+          <div class="analysis-panel" id="sum-ops">
+            <button class="close-btn" onclick="event.stopPropagation();toggleAnalysis('sum-ops')">✕</button>
+            <div class="analysis-item"><span class="label">أداء المبادرات:</span><span class="value">86.8% (جيد)</span></div>
+            <div class="analysis-item"><span class="label">أداء الوثائق:</span><span class="value">80.4% (جيد) — 114 وثيقة</span></div>
+            <div class="analysis-item"><span class="label">أقل إدارة أداءً:</span><span class="value">التمكين الاقتصادي (46.9%)</span></div>
+            <div class="analysis-item"><span class="label">أعلى إدارة أداءً:</span><span class="value">مكتب المدير العام (98.1%)</span></div>
+          </div>
+        </div>
+        <div class="kpi-card pending" onclick="toggleAnalysis('sum-func')">
+          <div class="kpi-label">الأداء الوظيفي</div>
+          <div class="kpi-value" style="color:var(--pending)">—</div>
+          <span class="kpi-badge badge-pending">غير متاح</span>
+          <div class="kpi-sub">تقرير مستقل غير مرفق</div>
+          <div class="analysis-panel" id="sum-func">
+            <button class="close-btn" onclick="event.stopPropagation();toggleAnalysis('sum-func')">✕</button>
+            <div class="analysis-item"><span class="label">الحالة:</span><span class="value">لم يُرفق تقرير الأداء الوظيفي ضمن مصادر البيانات المتاحة</span></div>
+            <div class="analysis-item"><span class="label">البيانات المطلوبة:</span><span class="value">تقييمات الأداء الفردي، توزيع مستويات الأداء، فجوات القدرات</span></div>
+          </div>
+        </div>
+        <div class="kpi-card good" onclick="toggleAnalysis('sum-risk')">
+          <div class="kpi-label">أداء المخاطر</div>
+          <div class="kpi-value" style="color:var(--good)">82</div>
+          <span class="kpi-badge badge-good">متوسط–منخفض</span>
+          <div class="kpi-sub">0 عالية | 13 متوسطة | 69 منخفضة</div>
+          <div class="analysis-panel" id="sum-risk">
+            <button class="close-btn" onclick="event.stopPropagation();toggleAnalysis('sum-risk')">✕</button>
+            <div class="analysis-item"><span class="label">المخاطر العالية:</span><span class="value">صفر — لا توجد مخاطر عالية</span></div>
+            <div class="analysis-item"><span class="label">المخاطر المتوسطة:</span><span class="value">13 مخاطرة (15.9%) — تشمل مالية وتشغيلية وحوكمة</span></div>
+            <div class="analysis-item"><span class="label">المخاطر المنخفضة:</span><span class="value">69 مخاطرة (84.1%)</span></div>
+          </div>
+        </div>
+        <div class="kpi-card excellent" onclick="toggleAnalysis('sum-fin')">
+          <div class="kpi-label">الأداء المالي</div>
+          <div class="kpi-value" style="color:var(--excellent)">99.9%</div>
+          <span class="kpi-badge badge-excellent">ممتاز</span>
+          <div class="kpi-sub">تبرعات: 23.5M ريال</div>
+          <div class="analysis-panel" id="sum-fin">
+            <button class="close-btn" onclick="event.stopPropagation();toggleAnalysis('sum-fin')">✕</button>
+            <div class="analysis-item"><span class="label">إجمالي التبرعات:</span><span class="value">23,469,326 ريال (مستهدف: 21,240,892)</span></div>
+            <div class="analysis-item"><span class="label">العائد التطوعي:</span><span class="value">2,450,915 ريال (122.5% من المستهدف)</span></div>
+            <div class="analysis-item"><span class="label">عائد الخدمات:</span><span class="value">3,223,583 ريال (99.2% من المستهدف)</span></div>
+          </div>
+        </div>
+        <div class="kpi-card excellent" onclick="toggleAnalysis('sum-gov')">
+          <div class="kpi-label">أداء الحوكمة</div>
+          <div class="kpi-value" style="color:var(--excellent)">97.8%</div>
+          <span class="kpi-badge badge-excellent">ممتاز</span>
+          <div class="kpi-sub">مستهدف: 99%</div>
+          <div class="analysis-panel" id="sum-gov">
+            <button class="close-btn" onclick="event.stopPropagation();toggleAnalysis('sum-gov')">✕</button>
+            <div class="analysis-item"><span class="label">المصدر:</span><span class="value">مؤشر نسبة التزام الجمعية بمعايير الحوكمة — المركز الوطني لتنمية القطاع غير الربحي</span></div>
+            <div class="analysis-item"><span class="label">الفجوة:</span><span class="value">1.2% دون المستهدف — تشير إلى فرصة تحسين محدودة</span></div>
+          </div>
+        </div>
+        <div class="kpi-card excellent" onclick="toggleAnalysis('sum-exc')">
+          <div class="kpi-label">التميز المؤسسي</div>
+          <div class="kpi-value" style="color:var(--excellent)">542</div>
+          <span class="kpi-badge badge-excellent">ممتاز</span>
+          <div class="kpi-sub">درجة من 1000 | مستهدف 500</div>
+          <div class="analysis-panel" id="sum-exc">
+            <button class="close-btn" onclick="event.stopPropagation();toggleAnalysis('sum-exc')">✕</button>
+            <div class="analysis-item"><span class="label">الدرجة المحققة:</span><span class="value">542 من 1000 (مستهدف 500)</span></div>
+            <div class="analysis-item"><span class="label">أعلى معيار:</span><span class="value">إدارة العمليات والمنتجات (86/150)</span></div>
+            <div class="analysis-item"><span class="label">فرصة التحسين:</span><span class="value">القيادة الإدارية (66/150)</span></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="content">
+  <!-- Executive Messages -->
+  <div class="sub-title">أهم الرسائل التنفيذية لمجلس الإدارة</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+    <div class="alert alert-success">✅ <strong>تميز مالي:</strong> تجاوزت التبرعات المستهدف بنسبة 10.5%، والعائد التطوعي بنسبة 22.5%، مما يعكس ثقة الداعمين واستدامة قوية.</div>
+    <div class="alert alert-success">✅ <strong>التزام بالرؤية:</strong> تحقق 100% في الإسهام بمستهدفات رؤية 2030 (32 مبادرة كاملة).</div>
+    <div class="alert alert-warn">⚠️ <strong>فجوة تأهيل سوق العمل:</strong> أداء 46.4% لهدف "تأهيل الأبناء لسوق العمل" يُشكّل الانحراف الاستراتيجي الأبرز.</div>
+    <div class="alert alert-warn">⚠️ <strong>ضعف التمكين الاقتصادي:</strong> أداء إدارة التمكين الاقتصادي (46.9%) يستدعي تدخلاً تنفيذياً عاجلاً.</div>
+    <div class="alert alert-info">📈 <strong>مسار تعافٍ:</strong> ارتفع الأداء الاستراتيجي من 83.8% في الربع الرابع 2025 إلى 90.1% في الربع الأول 2026.</div>
+  </div>
 
-    <!-- ════ PAGE: OVERVIEW ════ -->
-    <div class="page active" id="page-overview">
-      <div class="sec-hdr">
-        <div>
-          <div class="sec-title">نظرة عامة على الإجراءات</div>
-          <div class="sec-chips">
-            <span class="chip">📋 إجراءان رئيسيان</span>
-            <span class="chip">📄 دليل ISO 30401:2018</span>
-            <span class="chip">🏢 جمعية تراؤف</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="ov-grid">
-        <div class="ov-card">
-          <div class="ov-lbl">إجمالي الخطوات</div>
-          <div class="ov-val" id="ov1">47</div>
-          <div class="ov-bar"><div class="ov-fill" id="ov1b" style="width:100%"></div></div>
-        </div>
-        <div class="ov-card">
-          <div class="ov-lbl">إجراء 207 — داخلي</div>
-          <div class="ov-val" id="ov2">0%</div>
-          <div class="ov-bar"><div class="ov-fill" id="ov2b" style="width:0%"></div></div>
-        </div>
-        <div class="ov-card">
-          <div class="ov-lbl">إجراء 208 — خارجي</div>
-          <div class="ov-val" id="ov3">0%</div>
-          <div class="ov-bar"><div class="ov-fill" id="ov3b" style="width:0%"></div></div>
-        </div>
-        <div class="ov-card">
-          <div class="ov-lbl">الإنجاز الكلي</div>
-          <div class="ov-val" id="ov4">0%</div>
-          <div class="ov-bar"><div class="ov-fill" id="ov4b" style="width:0%"></div></div>
-        </div>
-      </div>
-
-      <!-- Summary cards -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
-        <div class="guide-card">
-          <div class="guide-hdr"><span>🏛</span><span class="guide-htitle">ا207-ع-د | إدارة المعارف داخلياً</span></div>
-          <div class="guide-body">
-            <p><strong>الهدف:</strong> توضيح إجراءات توثيق بيانات ومعلومات الجمعية وزيادة وتبادل المعارف وإثرائها لدى العاملين.</p>
-            <p><strong>المالك:</strong> إدارة الاستراتيجية والتميز المؤسسي | <strong>القسم:</strong> إدارة المعرفة</p>
-            <p><strong>الأقسام:</strong> تحديد الاحتياجات · حصر الصريحة · حصر الضمنية · النشر · التبادل · الدروس المستفادة</p>
-            <div class="highlight">📅 تاريخ الإصدار: 14/12/2025م | الإصدار: 03</div>
-          </div>
-        </div>
-        <div class="guide-card">
-          <div class="guide-hdr"><span>🌐</span><span class="guide-htitle">ا208-ع-د | إدارة المعارف خارجياً</span></div>
-          <div class="guide-body">
-            <p><strong>الهدف:</strong> توضيح إجراءات المقارنات المرجعية والاستفادة من تجارب الآخرين وممارستهم للتحسين المستمر.</p>
-            <p><strong>المالك:</strong> إدارة الاستراتيجية والتميز المؤسسي | <strong>القسم:</strong> إدارة المعرفة</p>
-            <p><strong>الأقسام:</strong> المقارنات المرجعية · الاستبانات والبحوث · التبادل الخارجي · النشر الخارجي</p>
-            <div class="highlight">📅 تاريخ الإصدار: 14/12/2025م | الإصدار: 03</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Legend -->
-      <div class="guide-card">
-        <div class="guide-hdr"><span>🔑</span><span class="guide-htitle">دليل الحالات والرموز</span></div>
-        <div class="guide-body">
-          <div style="display:flex;gap:20px;flex-wrap:wrap">
-            <div style="display:flex;align-items:center;gap:7px"><span style="background:#f5f5f5;border:1.5px solid #ccc;border-radius:6px;padding:3px 10px;font-size:11px;color:#888">لم يبدأ</span><span style="font-size:11px">الخطوة لم تبدأ بعد</span></div>
-            <div style="display:flex;align-items:center;gap:7px"><span style="background:#fffbe8;border:1.5px solid #e09000;border-radius:6px;padding:3px 10px;font-size:11px;color:#8a5f00">قيد التنفيذ</span><span style="font-size:11px">الخطوة جارية حالياً</span></div>
-            <div style="display:flex;align-items:center;gap:7px"><span style="background:#eaf5f0;border:1.5px solid #2aaa7a;border-radius:6px;padding:3px 10px;font-size:11px;color:#1a6b55">مكتملة</span><span style="font-size:11px">تم إنجاز الخطوة</span></div>
-            <div style="display:flex;align-items:center;gap:7px"><span style="background:#fff0f0;border:1.5px solid #d94040;border-radius:6px;padding:3px 10px;font-size:11px;color:#d94040">موقوفة</span><span style="font-size:11px">الخطوة معلقة/محجوبة</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ════ PAGE: 207 ════ -->
-    <div class="page" id="page-p207">
-      <div class="sec-hdr">
-        <div>
-          <div class="sec-title">ا207-ع-د | إدارة المعارف داخلياً</div>
-          <div class="sec-chips">
-            <span class="chip">📋 6 أقسام</span>
-            <span class="chip">⏱ الإصدار 03</span>
-            <span class="chip">🏢 مكتبي</span>
-          </div>
-        </div>
-        <div><span class="chip" id="prog-207-chip" style="font-size:13px;padding:7px 14px">0%</span></div>
-      </div>
-
-      <div id="acc207"></div>
-    </div>
-
-    <!-- ════ PAGE: 208 ════ -->
-    <div class="page" id="page-p208">
-      <div class="sec-hdr">
-        <div>
-          <div class="sec-title">ا208-ع-د | إدارة المعارف خارجياً</div>
-          <div class="sec-chips">
-            <span class="chip">🌐 4 أقسام</span>
-            <span class="chip">⏱ الإصدار 03</span>
-            <span class="chip">🏢 مكتبي / ميداني</span>
-          </div>
-        </div>
-        <div><span class="chip" id="prog-208-chip" style="font-size:13px;padding:7px 14px">0%</span></div>
-      </div>
-
-      <div id="acc208"></div>
-    </div>
-
-    <!-- ════ PAGE: KPIs ════ -->
-    <div class="page" id="page-kpis">
-      <div class="sec-hdr">
-        <div>
-          <div class="sec-title">مؤشرات قياس الأداء — KPIs</div>
-          <div class="sec-chips"><span class="chip">📊 4 مؤشرات</span><span class="chip">🔁 دورية متنوعة</span></div>
-        </div>
-      </div>
-      <div class="kpi-grid" id="kpi-grid"></div>
-    </div>
-
-    <!-- ════ PAGE: RISKS ════ -->
-    <div class="page" id="page-risks">
-      <div class="sec-hdr">
-        <div>
-          <div class="sec-title">المخاطر والفرص المتعلقة بالإجراءات</div>
-          <div class="sec-chips"><span class="chip">⚠️ 5 مخاطر</span><span class="chip">✅ 4 فرص</span></div>
-        </div>
-      </div>
-
-      <div class="section-sub">المخاطر المحتملة</div>
-      <div class="risk-wrap" style="overflow-x:auto">
-        <table class="risk-tbl">
-          <thead>
-            <tr><th>م</th><th>المخاطر المحتملة</th><th>قوة التأثير</th><th>الإجراءات المتخذة</th><th>المسؤول</th><th>الإجراء</th></tr>
-          </thead>
-          <tbody id="risks-body"></tbody>
-        </table>
-      </div>
-
-      <div class="section-sub" style="margin-top:24px">الفرص المتاحة</div>
-      <div class="risk-wrap" style="overflow-x:auto">
-        <table class="risk-tbl">
-          <thead>
-            <tr><th>م</th><th>الفرص</th><th>احتمالية الحدوث</th><th>الإجراءات المتخذة</th><th>المسؤول</th><th>الإجراء</th></tr>
-          </thead>
-          <tbody id="opps-body"></tbody>
+  <!-- Top 5 Deviations -->
+  <div class="grid-2" style="gap:16px">
+    <div>
+      <div class="sub-title">أبرز 5 انحرافات جوهرية</div>
+      <div class="info-card">
+        <table class="data-table" style="box-shadow:none">
+          <thead><tr><th>#</th><th>المؤشر</th><th>المتحقق</th><th>الحالة</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>تأهيل الأبناء لسوق العمل</td><td>46.4%</td><td><span class="kpi-badge badge-weak">ضعيف</span></td></tr>
+            <tr><td>2</td><td>بناء القدرات القيادية (البنين)</td><td>50%</td><td><span class="kpi-badge badge-weak">ضعيف</span></td></tr>
+            <tr><td>3</td><td>إدارة التمكين الاقتصادي</td><td>46.9%</td><td><span class="kpi-badge badge-weak">ضعيف</span></td></tr>
+            <tr><td>4</td><td>مركز البحث والابتكار</td><td>58.3%</td><td><span class="kpi-badge badge-weak">ضعيف</span></td></tr>
+            <tr><td>5</td><td>مرات الظهور الإعلامي</td><td>55%</td><td><span class="kpi-badge badge-weak">ضعيف</span></td></tr>
+          </tbody>
         </table>
       </div>
     </div>
-
-    <!-- ════ PAGE: GUIDE ════ -->
-    <div class="page" id="page-guide">
-      <div class="sec-hdr">
-        <div>
-          <div class="sec-title">دليل نظام إدارة المعرفة</div>
-          <div class="sec-chips"><span class="chip">📖 111-د</span><span class="chip">🏅 ISO 30401:2018</span><span class="chip">الإصدار 04</span></div>
-        </div>
+    <div>
+      <div class="sub-title">أبرز 5 توصيات لمجلس الإدارة</div>
+      <div class="info-card">
+        <table class="data-table" style="box-shadow:none">
+          <thead><tr><th>#</th><th>التوصية</th><th>الأولوية</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>توجيه إدارة التمكين الاقتصادي بمراجعة خطة التنفيذ</td><td><span class="priority-high">عالية</span></td></tr>
+            <tr><td>2</td><td>اعتماد آلية بديلة لتنويع مسارات سوق العمل</td><td><span class="priority-high">عالية</span></td></tr>
+            <tr><td>3</td><td>متابعة تطوير إجراءات قياس شهادات المستفيدين</td><td><span class="priority-med">متوسطة</span></td></tr>
+            <tr><td>4</td><td>تعزيز جاذبية برامج القيادة للبنين</td><td><span class="priority-med">متوسطة</span></td></tr>
+            <tr><td>5</td><td>وضع خطة طوارئ للمخاطر المالية المتوسطة الثلاث</td><td><span class="priority-high">عالية</span></td></tr>
+          </tbody>
+        </table>
       </div>
+    </div>
+  </div>
+</div>
 
-      <div class="guide-card">
-        <div class="guide-hdr"><span>🏢</span><span class="guide-htitle">التعريف بالجمعية ورؤيتها</span></div>
-        <div class="guide-body">
-          <p><strong>الرؤية:</strong> نموذج تنموي رائد ومستدام في بناء وتمكين الأيتام وأسرهم.</p>
-          <p><strong>الرسالة:</strong> جمعية تنموية تسعى لتحسين جودة حياة أيتام محافظة حفر الباطن وأسرهم وتمكينهم، وتسهم في التنمية الوطنية ومساندة قطاع الأيتام بالمملكة عبر منظومة عمل متكاملة وكفاءات ممكنة تحقق استدامة الأثر في بيئة ابتكارية وجاذبة.</p>
-          <p><strong>القيم المؤسسية:</strong> الرحمة — العدل — الابتكار — الإتقان — الحوكمة — التواصل الفاعل — استدامة الأثر</p>
-        </div>
-      </div>
+<!-- ================================================================ -->
+<!-- PAGE: PERFORMANCE MAP -->
+<!-- ================================================================ -->
+<div id="page-map" class="page">
+  <div class="section-title"><span class="icon">🗺️</span> خريطة الأداء المؤسسي — الترابط بين المحاور</div>
+  <div class="text-small text-muted mb-4">إدارة مركز قياس الأداء | توضح هذه الصفحة كيف يؤثر كل محور على الآخر وأين تقع نقاط الضغط المؤسسي</div>
 
-      <div class="guide-card">
-        <div class="guide-hdr"><span>🎯</span><span class="guide-htitle">المبادئ التوجيهية لإدارة المعرفة</span></div>
-        <div class="guide-body">
-          <ul>
-            <li><strong>طبيعة المعرفة:</strong> غير ملموسة ومتشعبة تعتمد على خبرات وجدارات الأفراد وتفاعلهم.</li>
-            <li><strong>القيمة:</strong> المعرفة مصدر رئيسي للقيمة لتحقيق الأهداف والغايات المؤسسية.</li>
-            <li><strong>التركيز:</strong> خدمة الأهداف والخطط الاستراتيجية واحتياجاتها.</li>
-            <li><strong>التكيف:</strong> منهج خاص يتوافق مع التوجهات الاستراتيجية للجمعية.</li>
-            <li><strong>الفهم المشترك:</strong> العناية بالتفاعلات بين أفراد الجمعية.</li>
-            <li><strong>البيئة:</strong> التركيز على التفاعل في بيئة العمل بما يعزز دورة حياة المعرفة.</li>
-            <li><strong>الثقافة:</strong> صناعة الثقافة الداعمة لإدارة المعرفة أمر بالغ الأهمية.</li>
-            <li><strong>التكرارية:</strong> العمل وفق منهجية ثابتة تسمح بالتحسين والتطوير المستمر.</li>
-          </ul>
-        </div>
-      </div>
+  <div class="perf-map mb-4" style="margin-bottom:16px">
+    <div class="map-node excellent" onclick="showTab('strategic')">
+      <div class="node-icon">🎯</div>
+      <div class="node-title">الأداء الاستراتيجي</div>
+      <div class="node-val" style="color:var(--excellent)">90.1%</div>
+      <div class="text-small text-muted">5 أبعاد | 26 هدف</div>
+    </div>
+    <div class="map-node good" onclick="showTab('operational')">
+      <div class="node-icon">⚙️</div>
+      <div class="node-title">الأداء التشغيلي</div>
+      <div class="node-val" style="color:var(--good)">83.6%</div>
+      <div class="text-small text-muted">14 إدارة | 114 وثيقة</div>
+    </div>
+    <div class="map-node pending" onclick="showTab('hrperf')">
+      <div class="node-icon">👥</div>
+      <div class="node-title">الأداء الوظيفي</div>
+      <div class="node-val" style="color:var(--pending)">—</div>
+      <div class="text-small text-muted">بيانات غير مكتملة</div>
+    </div>
+    <div class="map-node excellent" onclick="showTab('financial')">
+      <div class="node-icon">💰</div>
+      <div class="node-title">الأداء المالي</div>
+      <div class="node-val" style="color:var(--excellent)">99.9%</div>
+      <div class="text-small text-muted">تجاوز المستهدف</div>
+    </div>
+    <div class="map-node good" onclick="showTab('risks')">
+      <div class="node-icon">⚠️</div>
+      <div class="node-title">أداء المخاطر</div>
+      <div class="node-val" style="color:var(--good)">82</div>
+      <div class="text-small text-muted">0 عالية | 13 متوسطة</div>
+    </div>
+    <div class="map-node excellent" onclick="showTab('governance')">
+      <div class="node-icon">🏛️</div>
+      <div class="node-title">أداء الحوكمة</div>
+      <div class="node-val" style="color:var(--excellent)">97.8%</div>
+      <div class="text-small text-muted">التزام بالمعايير</div>
+    </div>
+    <div class="map-node excellent" onclick="showTab('excellence')">
+      <div class="node-icon">🏆</div>
+      <div class="node-title">التميز المؤسسي</div>
+      <div class="node-val" style="color:var(--excellent)">542/1000</div>
+      <div class="text-small text-muted">جائزة الملك عبدالعزيز</div>
+    </div>
+    <div class="map-node excellent" style="background:linear-gradient(135deg,var(--primary),var(--primary-light));color:white">
+      <div class="node-icon">📊</div>
+      <div class="node-title" style="color:white">الأداء المؤسسي الكلي</div>
+      <div class="node-val" style="color:var(--accent-light)">90.1%</div>
+      <div class="text-small" style="color:rgba(255,255,255,0.7)">ممتاز — Q1 2026</div>
+    </div>
+    <div class="map-node good" onclick="showTab('decisions')">
+      <div class="node-icon">📋</div>
+      <div class="node-title">القرارات والتوصيات</div>
+      <div class="node-val" style="color:var(--good)">12</div>
+      <div class="text-small text-muted">توصية وقرار</div>
+    </div>
+  </div>
 
-      <div class="guide-card">
-        <div class="guide-hdr"><span>♻️</span><span class="guide-htitle">دورة PDCA — أساس نظام إدارة المعرفة</span></div>
-        <div class="guide-body">
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px">
-            <div style="background:#eaf5f0;border-radius:9px;padding:12px;border-right:3px solid var(--P)"><div style="font-weight:700;margin-bottom:5px;color:var(--PD)">📋 خطط (Plan)</div>تحديد المخاطر وتقييمها · التخطيط لمعالجتها · ضبط الوثائق</div>
-            <div style="background:#fffbe8;border-radius:9px;padding:12px;border-right:3px solid var(--WN)"><div style="font-weight:700;margin-bottom:5px;color:#7a4e00">⚡ نفذ (Do)</div>اكتساب المعرفة · إنتاجها · نشرها · تبادلها</div>
-            <div style="background:#fff0f0;border-radius:9px;padding:12px;border-right:3px solid var(--DG)"><div style="font-weight:700;margin-bottom:5px;color:#8a2020">🔍 قيّم (Check)</div>التدقيق الداخلي · قياس رضا المستفيد (داخلي/خارجي)</div>
-            <div style="background:#f0f0ff;border-radius:9px;padding:12px;border-right:3px solid #5566ff"><div style="font-weight:700;margin-bottom:5px;color:#2233aa">🔧 حسّن (Act)</div>ضبط حالات عدم المطابقة · الإجراءات التصحيحية · فرص التحسين</div>
+  <div class="sub-title">نقاط الضغط المؤسسي وأولويات الربع القادم</div>
+  <table class="data-table mb-4">
+    <thead>
+      <tr><th>المحور</th><th>الأثر على المحاور الأخرى</th><th>نقطة الضغط</th><th>من يحتاج قراراً؟</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>الأداء التشغيلي</td><td>يُضعف الاستراتيجي في بعد المستفيدين</td><td>إدارة التمكين الاقتصادي (46.9%)</td><td><span class="priority-high">مجلس الإدارة</span></td></tr>
+      <tr><td>الأداء المالي</td><td>يدعم الاستراتيجي لكن مخاطر استدامة قائمة</td><td>3 مخاطر مالية متوسطة</td><td><span class="priority-med">الإدارة التنفيذية</span></td></tr>
+      <tr><td>الحوكمة</td><td>ضعف الإفصاح يؤثر على السمعة والمخاطر</td><td>التأخر في الإفصاح (خطر متوسط)</td><td><span class="priority-med">الإدارة التنفيذية</span></td></tr>
+      <tr><td>التميز المؤسسي</td><td>يؤثر على نضج المنهجيات والممارسات</td><td>القيادة الإدارية (66/150)</td><td><span class="priority-low">متابعة تنفيذية</span></td></tr>
+    </tbody>
+  </table>
+
+  <!-- Methodological Note -->
+  <div class="alert alert-info" style="margin-bottom:16px">
+    📐 <strong>ملاحظة منهجية:</strong> كل محور يُقرأ بمقياسه الخاص — لا يمكن مقارنة نسبة الإنجاز الاستراتيجي (%) بدرجة التميز أو بعدد المخاطر في رسم واحد مشترك.
+  </div>
+
+  <!-- Axis Status Grid -->
+  <div class="sub-title">حالة المحاور — كل مقياس بأساسه الصحيح</div>
+  <div class="card mb-4">
+    <table class="data-table" style="box-shadow:none">
+      <thead>
+        <tr>
+          <th>المحور</th>
+          <th>القيمة الفعلية</th>
+          <th>أساس القياس</th>
+          <th>طريقة القراءة</th>
+          <th>الحالة</th>
+          <th>الشريط</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>🎯 الأداء الاستراتيجي</td>
+          <td><strong>90.1%</strong></td>
+          <td>نسبة إنجاز الأهداف</td>
+          <td>مقارنة بالمستهدف 100%</td>
+          <td><span class="kpi-badge badge-excellent">ممتاز</span></td>
+          <td style="width:200px"><div class="progress-bar-wrap"><div class="progress-bar-fill fill-excellent" style="width:90.1%"></div></div></td>
+        </tr>
+        <tr>
+          <td>⚙️ الأداء التشغيلي</td>
+          <td><strong>83.6%</strong></td>
+          <td>نسبة إنجاز المبادرات والوثائق</td>
+          <td>مقارنة بالمستهدف 100%</td>
+          <td><span class="kpi-badge badge-good">جيد</span></td>
+          <td><div class="progress-bar-wrap"><div class="progress-bar-fill fill-good" style="width:83.6%"></div></div></td>
+        </tr>
+        <tr>
+          <td>💰 الأداء المالي</td>
+          <td><strong>99.9%</strong></td>
+          <td>نسبة إنجاز المؤشرات المالية</td>
+          <td>مقارنة بالمستهدف 100%</td>
+          <td><span class="kpi-badge badge-excellent">ممتاز</span></td>
+          <td><div class="progress-bar-wrap"><div class="progress-bar-fill fill-excellent" style="width:99.9%"></div></div></td>
+        </tr>
+        <tr>
+          <td>⚠️ أداء المخاطر</td>
+          <td><strong>84.1%</strong></td>
+          <td>نسبة المخاطر المنخفضة (69 من 82)</td>
+          <td>كلما ارتفعت النسبة كان أفضل — لا توجد مخاطر عالية</td>
+          <td><span class="kpi-badge badge-good">جيد</span></td>
+          <td><div class="progress-bar-wrap"><div class="progress-bar-fill fill-good" style="width:84.1%"></div></div></td>
+        </tr>
+        <tr>
+          <td>🏛️ أداء الحوكمة</td>
+          <td><strong>97.8%</strong></td>
+          <td>نسبة الالتزام بمعايير الحوكمة</td>
+          <td>مقارنة بمستهدف 99%</td>
+          <td><span class="kpi-badge badge-excellent">ممتاز</span></td>
+          <td><div class="progress-bar-wrap"><div class="progress-bar-fill fill-excellent" style="width:97.8%"></div></div></td>
+        </tr>
+        <tr>
+          <td>🏆 التميز المؤسسي</td>
+          <td><strong>542 / 1000</strong></td>
+          <td>درجة التقييم الذاتي (مستهدف 500)</td>
+          <td>108.4% من المستهدف — تجاوز المستهدف بـ 42 درجة</td>
+          <td><span class="kpi-badge badge-excellent">فوق المستهدف</span></td>
+          <td><div class="progress-bar-wrap"><div class="progress-bar-fill fill-excellent" style="width:54.2%"></div></div><div class="text-small text-muted" style="margin-top:2px">54.2% من الدرجة القصوى</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Two charts: correct ones -->
+  <div class="row">
+    <div class="chart-box w2">
+      <div class="chart-title">مستوى الأداء للمحاور ذات المقياس الموحّد (نسبة %)</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px">⚠️ يشمل فقط المحاور التي تُقاس بالنسبة المئوية — التميز يُعرض بمقياسه المستقل</div>
+      <div class="chart-wrap"><canvas id="mapBarChart"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">درجة التميز المؤسسي (مقياس مستقل من 1000)</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px">⚠️ لا تُقارَن بنسب المحاور الأخرى — تُقرأ نسبةً من المستهدف (500)</div>
+      <div class="chart-wrap"><canvas id="mapExcellenceChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- PAGE: STRATEGIC PERFORMANCE -->
+<!-- ================================================================ -->
+<div id="page-strategic" class="page">
+  <button class="back-btn" onclick="showTab('summary')">← العودة للملخص</button>
+  <div class="section-title"><span class="icon">🎯</span> الأداء الاستراتيجي — الربع الأول 2026م</div>
+  <div class="text-small text-muted mb-4">المصدر: تقرير الأداء الاستراتيجي للربع الأول 2026م | إدارة مركز قياس الأداء</div>
+
+  <div class="color-key">
+    <strong style="font-size:12px">مفتاح الألوان:</strong>
+    <div class="color-key-item"><div class="color-key-dot" style="background:var(--excellent)"></div><span>ممتاز 90%-100%</span></div>
+    <div class="color-key-item"><div class="color-key-dot" style="background:var(--good)"></div><span>جيد 70%-89%</span></div>
+    <div class="color-key-item"><div class="color-key-dot" style="background:var(--weak)"></div><span>ضعيف أقل من 70%</span></div>
+    <div class="color-key-item"><div class="color-key-dot" style="background:var(--pending)"></div><span>لم يحن دورية القياس</span></div>
+  </div>
+
+  <!-- Overall + Dimensions -->
+  <div class="row mb-4">
+    <div class="big-kpi" style="flex:1">
+      <div class="big-kpi-value" style="color:var(--accent-light)">90.1%</div>
+      <div class="big-kpi-label">الأداء الاستراتيجي العام</div>
+      <div class="big-kpi-sub">11 ممتاز | 5 جيد | 2 ضعيف | 8 لم يحن</div>
+    </div>
+    <div style="flex:4">
+      <div class="grid-5">
+        <div class="dim-card good" onclick="toggleAnalysis('dim-1')">
+          <div class="dim-title">المستفيدون</div>
+          <div class="dim-value" style="color:var(--good)">81.3%</div>
+          <span class="kpi-badge badge-good">جيد</span>
+          <div class="dim-goals">10 أهداف | 17 مؤشر</div>
+          <div class="analysis-panel" id="dim-1">
+            <button class="close-btn" onclick="event.stopPropagation();toggleAnalysis('dim-1')">✕</button>
+            <div class="analysis-item"><span class="label">ممتاز:</span><span class="value">التحصين الفكري (100%)، المهارات الحياتية (97.9%)، تعزيز الأسر (96.3%)</span></div>
+            <div class="analysis-item"><span class="label">ضعيف:</span><span class="value">تأهيل سوق العمل (46.4%)، القدرات القيادية (50%)</span></div>
           </div>
         </div>
-      </div>
-
-      <div class="guide-card">
-        <div class="guide-hdr"><span>🔒</span><span class="guide-htitle">سياسة إدارة المعرفة</span></div>
-        <div class="guide-body">
-          <div class="highlight">نعتبر المعرفة والمعلومات أصولاً قيّمة تساهم في تحقيق التوجه الاستراتيجي وتتيح اتخاذ قرارات فعالة في بيئة العمل.</div>
-          <ul>
-            <li>حصر وتصنيف المعارف الصريحة والضمنية بالجمعية وتعزيز القيمة منها</li>
-            <li>اكتساب وتطبيق وإنتاج المعرفة ونشرها ومشاركتها مع المعنيين</li>
-            <li>تلبية متطلبات أنظمة إدارة المعرفة وفق ISO 30401:2018</li>
-            <li>التحسين المستمر لأنظمة إدارة المعرفة من خلال المراجعة المستمرة</li>
-          </ul>
+        <div class="dim-card excellent" onclick="toggleAnalysis('dim-2')">
+          <div class="dim-title">أصحاب المصلحة</div>
+          <div class="dim-value" style="color:var(--excellent)">100%</div>
+          <span class="kpi-badge badge-excellent">ممتاز</span>
+          <div class="dim-goals">هدفان | 5 مؤشرات</div>
+          <div class="analysis-panel" id="dim-2">
+            <button class="close-btn" onclick="event.stopPropagation();toggleAnalysis('dim-2')">✕</button>
+            <div class="analysis-item"><span class="label">الإسهام في الرؤية:</span><span class="value">100% — 32 مبادرة متحققة</span></div>
+            <div class="analysis-item"><span class="label">ملاحظة:</span><span class="value">الهدف الثاني لم يحن موعد قياسه</span></div>
+          </div>
         </div>
-      </div>
-
-      <div class="guide-card">
-        <div class="guide-hdr"><span>📌</span><span class="guide-htitle">ممكنات إدارة المعرفة</span></div>
-        <div class="guide-body">
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px">
-            <div><div style="font-weight:700;margin-bottom:5px">👥 رأس المال البشري</div><ul><li>قسم إدارة المعرفة في الهيكل التنظيمي</li><li>حصر المعارف الضمنية للموظفين</li><li>مجموعات عمل لمشاركة المعارف</li></ul></div>
-            <div><div style="font-weight:700;margin-bottom:5px">📋 إجراءات العمل</div><ul><li>إجراء حصر الاحتياجات المعرفية</li><li>إجراء حصر المعارف الصريحة</li><li>إجراء حصر المعارف الضمنية</li><li>إجراء التبادل الداخلي والخارجي</li></ul></div>
-            <div><div style="font-weight:700;margin-bottom:5px">💻 البنية التحتية</div><ul><li>الموقع الإلكتروني للجمعية</li><li>منصة تراؤف الرقمية</li><li>بنك الأفكار</li><li>النشرات التطويرية</li></ul></div>
-            <div><div style="font-weight:700;margin-bottom:5px">⚖️ الحوكمة</div><ul><li>سياسة إدارة المعرفة المعتمدة</li><li>أهداف متوافقة مع الاستراتيجية</li><li>أدوار ومسؤوليات محددة</li><li>إجراءات عمل معتمدة</li></ul></div>
+        <div class="dim-card excellent" onclick="toggleAnalysis('dim-3')">
+          <div class="dim-title">المالي</div>
+          <div class="dim-value" style="color:var(--excellent)">99.9%</div>
+          <span class="kpi-badge badge-excellent">ممتاز</span>
+          <div class="dim-goals">هدفان | 5 مؤشرات</div>
+          <div class="analysis-panel" id="dim-3">
+            <button class="close-btn" onclick="event.stopPropagation();toggleAnalysis('dim-3')">✕</button>
+            <div class="analysis-item"><span class="label">التبرعات:</span><span class="value">23,469,326 ريال (+10.5% فوق المستهدف)</span></div>
+            <div class="analysis-item"><span class="label">العائد التطوعي:</span><span class="value">2,450,915 ريال (122.5%)</span></div>
+          </div>
+        </div>
+        <div class="dim-card excellent" onclick="toggleAnalysis('dim-4')">
+          <div class="dim-title">العمليات الداخلية</div>
+          <div class="dim-value" style="color:var(--excellent)">93.7%</div>
+          <span class="kpi-badge badge-excellent">ممتاز</span>
+          <div class="dim-goals">6 أهداف | 12 مؤشر</div>
+          <div class="analysis-panel" id="dim-4">
+            <button class="close-btn" onclick="event.stopPropagation();toggleAnalysis('dim-4')">✕</button>
+            <div class="analysis-item"><span class="label">ممتاز:</span><span class="value">الابتكار (100%)، المنهجيات (100%)، نمذجة العمل (100%)، الرشاقة التنظيمية (98.3%)</span></div>
+            <div class="analysis-item"><span class="label">جيد:</span><span class="value">إدارة السمعة (76.2%)، الشراكات (88.4%)</span></div>
+          </div>
+        </div>
+        <div class="dim-card excellent" onclick="toggleAnalysis('dim-5')">
+          <div class="dim-title">التعلم والنمو</div>
+          <div class="dim-value" style="color:var(--excellent)">93.9%</div>
+          <span class="kpi-badge badge-excellent">ممتاز</span>
+          <div class="dim-goals">6 أهداف | 10 مؤشرات</div>
+          <div class="analysis-panel" id="dim-5">
+            <button class="close-btn" onclick="event.stopPropagation();toggleAnalysis('dim-5')">✕</button>
+            <div class="analysis-item"><span class="label">ممتاز:</span><span class="value">المجتمع الرقمي (100%)، القيم المؤسسية (100%)</span></div>
+            <div class="analysis-item"><span class="label">جيد:</span><span class="value">استثمار المتطوعين (88.4%)</span></div>
+            <div class="analysis-item"><span class="label">لم يحن:</span><span class="value">القدرات التنافسية، الصف الثاني، بيئة العمل</span></div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-  </div><!-- /content -->
-</div><!-- /main -->
+  <!-- Historical Trend + KPI Distribution -->
+  <div class="row">
+    <div class="chart-box w3">
+      <div class="chart-title">المسار التاريخي للأداء الاستراتيجي (2023 – 2026م)</div>
+      <div class="chart-wrap-lg"><canvas id="historicalChart"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">توزيع حالات الأهداف الاستراتيجية</div>
+      <div class="chart-wrap"><canvas id="goalsDistChart"></canvas></div>
+    </div>
+  </div>
 
-<div class="toast" id="toast"></div>
+  <!-- Strategic Goals Table -->
+  <div class="sub-title">نتائج الأهداف الاستراتيجية — بعد المستفيدين</div>
+  <div class="info-card mb-4">
+    <table class="data-table" style="box-shadow:none">
+      <thead>
+        <tr><th>#</th><th>الهدف الاستراتيجي</th><th>نسبة التحقق</th><th>الحالة</th><th>التحليل والتوصية</th></tr>
+      </thead>
+      <tbody>
+        <tr class="clickable" onclick="toggleRowDetail('d-s2')">
+          <td>س2</td><td>تعزيز قدرات الأيتام علمياً</td>
+          <td><strong>89.5%</strong><div class="progress-bar-wrap mt-1"><div class="progress-bar-fill fill-good" style="width:89.5%"></div></div></td>
+          <td><span class="kpi-badge badge-good">جيد</span></td>
+          <td><span style="font-size:11px;color:var(--text-muted)">اضغط للتفاصيل ▼</span></td>
+        </tr>
+        <tr id="d-s2" class="integration-detail">
+          <td colspan="5">
+            <div class="analysis-item"><span class="label">المؤشرات:</span><span class="value">نسبة المتفوقين: 89.5% (مستهدف 65% | متحقق 58.2%) — البنات 97.4%، البنين 81.5%</span></div>
+            <div class="analysis-item"><span class="label">التوصية:</span><span class="value">تكثيف الزيارات الميدانية للمدارس وتوجيه التدخلات نحو الفئات الأضعف تحصيلاً</span></div>
+          </td>
+        </tr>
+        <tr><td>س3</td><td>تحصين الأيتام فكرياً</td>
+          <td><strong>100%</strong><div class="progress-bar-wrap mt-1"><div class="progress-bar-fill fill-excellent" style="width:100%"></div></div></td>
+          <td><span class="kpi-badge badge-excellent">ممتاز</span></td>
+          <td><span style="font-size:11px">مستهدف 80% — تحقق كامل</span></td>
+        </tr>
+        <tr><td>س4</td><td>تمكين المهارات الحياتية</td>
+          <td><strong>97.9%</strong><div class="progress-bar-wrap mt-1"><div class="progress-bar-fill fill-excellent" style="width:97.9%"></div></div></td>
+          <td><span class="kpi-badge badge-excellent">ممتاز</span></td>
+          <td><span style="font-size:11px">البنات 99.5%، البنين 96.3%</span></td>
+        </tr>
+        <tr class="clickable" onclick="toggleRowDetail('d-s5')">
+          <td>س5</td><td>تأهيل الأبناء لسوق العمل</td>
+          <td><strong>46.4%</strong><div class="progress-bar-wrap mt-1"><div class="progress-bar-fill fill-weak" style="width:46.4%"></div></div></td>
+          <td><span class="kpi-badge badge-weak">ضعيف</span></td>
+          <td><span style="font-size:11px;color:var(--text-muted)">اضغط للتفاصيل ▼</span></td>
+        </tr>
+        <tr id="d-s5" class="integration-detail">
+          <td colspan="5">
+            <div class="analysis-item"><span class="label">السبب:</span><span class="value">ضعف الالتزام بإكمال البرامج، تأثير شهر رمضان على الحضور، قصور فاعلية الاستقطاب</span></div>
+            <div class="analysis-item"><span class="label">الأثر:</span><span class="value">84 مستفيد من 151 مستهدف للتأهيل | 16 مستفيد من 43 مستهدف للتمكين</span></div>
+            <div class="analysis-item"><span class="label">الإجراء:</span><span class="value">تنويع أساليب التدريب، استقطاب فعّال، استكمال الحقائب التدريبية قبل التنفيذ</span></div>
+            <div class="analysis-item"><span class="label">المالك:</span><span class="value">إدارة التمكين الاقتصادي</span></div>
+          </td>
+        </tr>
+        <tr class="clickable" onclick="toggleRowDetail('d-s6')">
+          <td>س6</td><td>بناء القدرات القيادية</td>
+          <td><strong>50%</strong><div class="progress-bar-wrap mt-1"><div class="progress-bar-fill fill-weak" style="width:50%"></div></div></td>
+          <td><span class="kpi-badge badge-weak">ضعيف</span></td>
+          <td><span style="font-size:11px;color:var(--text-muted)">اضغط للتفاصيل ▼</span></td>
+        </tr>
+        <tr id="d-s6" class="integration-detail">
+          <td colspan="5">
+            <div class="analysis-item"><span class="label">السبب:</span><span class="value">نادي البنين: 0% — عزوف المستفيدين وضعف الاستقطاب | نادي البنات: 100%</span></div>
+            <div class="analysis-item"><span class="label">الإجراء:</span><span class="value">رفع فاعلية فريق البناء التربوي، تنويع أساليب البرامج القيادية</span></div>
+          </td>
+        </tr>
+        <tr><td>س9</td><td>التمكين الاقتصادي للأمهات</td>
+          <td><strong>72.5%</strong><div class="progress-bar-wrap mt-1"><div class="progress-bar-fill fill-good" style="width:72.5%"></div></div></td>
+          <td><span class="kpi-badge badge-good">جيد</span></td>
+          <td><span style="font-size:11px">التمكين 100% | التأهيل 45% — فجوة في التكامل</span></td>
+        </tr>
+        <tr><td>س10</td><td>تعزيز أسر الأيتام اجتماعياً وصحياً وسكنياً</td>
+          <td><strong>96.3%</strong><div class="progress-bar-wrap mt-1"><div class="progress-bar-fill fill-excellent" style="width:96.3%"></div></div></td>
+          <td><span class="kpi-badge badge-excellent">ممتاز</span></td>
+          <td><span style="font-size:11px">الاحتياجات الأساسية 96.3%، الصحية 95.6%، السكنية 97%</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Dimensions chart -->
+  <div class="row">
+    <div class="chart-box">
+      <div class="chart-title">أداء الأبعاد الاستراتيجية الخمسة</div>
+      <div class="chart-wrap"><canvas id="dimensionsChart"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">توزيع المؤشرات حسب الحالة</div>
+      <div class="chart-wrap"><canvas id="kpiDistChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- PAGE: OPERATIONAL PERFORMANCE -->
+<!-- ================================================================ -->
+<div id="page-operational" class="page">
+  <button class="back-btn" onclick="showTab('summary')">← العودة للملخص</button>
+  <div class="section-title"><span class="icon">⚙️</span> الأداء التشغيلي — الربع الأول 2026م</div>
+  <div class="text-small text-muted mb-4">المصدر: تقرير الأداء التشغيلي للربع الأول 2026م | إدارة مركز قياس الأداء</div>
+
+  <div class="grid-4 mb-4" style="margin-bottom:16px">
+    <div class="kpi-card good">
+      <div class="kpi-label">الأداء التشغيلي الكلي</div>
+      <div class="kpi-value" style="color:var(--good)">83.6%</div>
+      <span class="kpi-badge badge-good">جيد</span>
+    </div>
+    <div class="kpi-card good">
+      <div class="kpi-label">أداء المبادرات</div>
+      <div class="kpi-value" style="color:var(--good)">86.8%</div>
+      <span class="kpi-badge badge-good">جيد</span>
+    </div>
+    <div class="kpi-card excellent">
+      <div class="kpi-label">أداء الأنشطة</div>
+      <div class="kpi-value" style="color:var(--excellent)">91.3%</div>
+      <span class="kpi-badge badge-excellent">ممتاز</span>
+    </div>
+    <div class="kpi-card good">
+      <div class="kpi-label">أداء مؤشرات الوثائق</div>
+      <div class="kpi-value" style="color:var(--good)">80.4%</div>
+      <span class="kpi-badge badge-good">جيد — 114 وثيقة</span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="chart-box w2">
+      <div class="chart-title">أداء الإدارات التشغيلية</div>
+      <div class="chart-wrap-lg"><canvas id="deptChart"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">توزيع الوثائق حسب الأداء</div>
+      <div class="chart-wrap"><canvas id="docsChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="sub-title">تفاصيل أداء الإدارات</div>
+  <table class="data-table mb-4">
+    <thead>
+      <tr><th>الإدارة</th><th>الأداء الكلي</th><th>أداء المبادرات</th><th>أداء الوثائق</th><th>الحالة</th><th>ملاحظات</th></tr>
+    </thead>
+    <tbody id="deptTableBody"></tbody>
+  </table>
+
+  <div class="sub-title">أبرز الانحرافات التشغيلية</div>
+  <div class="info-card">
+    <table class="data-table" style="box-shadow:none">
+      <thead><tr><th>الإدارة</th><th>سبب الانحراف</th><th>الأثر</th><th>الإجراء التصحيحي</th><th>المالك</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>إدارة التمكين الاقتصادي (46.9%)</td>
+          <td>ضعف استقطاب المستفيدين، قصور في مسارات التمكين البديلة</td>
+          <td>يؤثر مباشرة على الهدف الاستراتيجي س5</td>
+          <td>مراجعة خطة التنفيذ وتنويع مسارات التمكين</td>
+          <td>المدير التنفيذي</td>
+        </tr>
+        <tr>
+          <td>مركز البحث والابتكار (58.3%)</td>
+          <td>عدم اكتمال خطة البحث التتبعي، ضعف تجاوب الأسر</td>
+          <td>يؤثر على جودة البيانات ومعرفة احتياجات المستفيدين</td>
+          <td>الالتزام بالجدول الزمني وتعزيز وسائل التواصل</td>
+          <td>مركز البحث والابتكار</td>
+        </tr>
+        <tr>
+          <td>نادي البنين (67.1%)</td>
+          <td>عزوف المستفيدين عن البرامج القيادية، ضعف الاستقطاب</td>
+          <td>يؤثر على الهدف الاستراتيجي س6</td>
+          <td>تطوير أساليب برامج القيادة وتعزيز الجاذبية</td>
+          <td>نادي تراؤف للبنين</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- PAGE: HR PERFORMANCE -->
+<!-- ================================================================ -->
+<div id="page-hrperf" class="page">
+  <button class="back-btn" onclick="showTab('summary')">← العودة للملخص</button>
+  <div class="section-title"><span class="icon">👥</span> الأداء الوظيفي — الربع الأول 2026م</div>
+  <div class="text-small text-muted mb-4">إدارة مركز قياس الأداء | ملاحظة: لا تُعرض أسماء الأفراد في نسخة مجلس الإدارة — القراءة تركز على القدرة المؤسسية</div>
+
+  <div class="alert alert-warn" style="margin-bottom:16px">
+    ⚠️ <strong>ملاحظة جودة البيانات:</strong> لم يُرفق تقرير الأداء الوظيفي المستقل ضمن مصادر البيانات المتاحة. البيانات التالية مستخلصة من مؤشرات بعد التعلم والنمو في التقرير الاستراتيجي.
+  </div>
+
+  <div class="grid-3 mb-4" style="margin-bottom:16px">
+    <div class="kpi-card excellent">
+      <div class="kpi-label">الالتزام بالقيم المؤسسية</div>
+      <div class="kpi-value" style="color:var(--excellent)">100%</div>
+      <span class="kpi-badge badge-excellent">ممتاز</span>
+      <div class="kpi-sub">مستهدف: 100% | متحقق: 100%</div>
+    </div>
+    <div class="kpi-card good">
+      <div class="kpi-label">استثمار المتطوعين</div>
+      <div class="kpi-value" style="color:var(--good)">75.6%</div>
+      <span class="kpi-badge badge-good">جيد</span>
+      <div class="kpi-sub">756 متطوع من 1000 مستهدف</div>
+    </div>
+    <div class="kpi-card excellent">
+      <div class="kpi-label">أتمتة الإجراءات الداخلية</div>
+      <div class="kpi-value" style="color:var(--excellent)">100%</div>
+      <span class="kpi-badge badge-excellent">ممتاز</span>
+      <div class="kpi-sub">مستهدف: 25% | متحقق: 25%</div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="info-card">
+      <div class="sub-title" style="margin-top:0">البيانات المطلوبة لتفعيل هذا التبويب بالكامل</div>
+      <table class="data-table" style="box-shadow:none">
+        <thead><tr><th>#</th><th>البيانات المطلوبة</th><th>مصدرها المتوقع</th><th>الجهة المالكة</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>توزيع مستويات أداء الموظفين</td><td>تقرير الأداء الوظيفي الفردي</td><td>إدارة الموارد البشرية</td></tr>
+          <tr><td>2</td><td>فجوات القدرات والتدريب</td><td>خطة التدريب والتطوير</td><td>إدارة الموارد البشرية</td></tr>
+          <tr><td>3</td><td>عدد الموظفين حسب الإدارة</td><td>الهيكل التنظيمي المعتمد</td><td>إدارة الموارد البشرية</td></tr>
+          <tr><td>4</td><td>نتائج تقييم الأداء الفردي</td><td>نظام إدارة الأداء</td><td>إدارة الموارد البشرية</td></tr>
+          <tr><td>5</td><td>نسب الالتزام بالحضور والانضباط</td><td>نظام الحضور والانصراف</td><td>إدارة الموارد البشرية</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="sub-title">الملاحظات المستخلصة من بيانات التعلم والنمو</div>
+  <div class="grid-2">
+    <div class="alert alert-success">✅ <strong>نقطة قوة:</strong> 100% التزام بالقيم المؤسسية يعكس ثقافة تنظيمية متماسكة وبيئة عمل ايجابية.</div>
+    <div class="alert alert-warn">⚠️ <strong>فرصة تحسين:</strong> 756 متطوع من 1000 مستهدف — ضعف التسويق للفرص التطوعية ويؤثر على العائد الاقتصادي.</div>
+    <div class="alert alert-info">📋 <strong>توصية:</strong> رفع تقرير الأداء الوظيفي بشكل مستقل في الربع القادم لإتمام القراءة التكاملية.</div>
+    <div class="alert alert-info">📋 <strong>علاقة الأداء الوظيفي بالتشغيلي:</strong> إدارة التمكين الاقتصادي (46.9%) تتطلب فحص القدرات الوظيفية فيها بشكل مستقل.</div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- PAGE: RISKS -->
+<!-- ================================================================ -->
+<div id="page-risks" class="page">
+  <button class="back-btn" onclick="showTab('summary')">← العودة للملخص</button>
+  <div class="section-title"><span class="icon">⚠️</span> أداء المخاطر — 2025م</div>
+  <div class="text-small text-muted mb-4">المصدر: تقرير تقييم المخاطر 2025 | إدارة مركز قياس الأداء</div>
+
+  <div class="grid-4 mb-4" style="margin-bottom:16px">
+    <div class="kpi-card good">
+      <div class="kpi-label">إجمالي المخاطر المسجلة</div>
+      <div class="kpi-value" style="color:var(--primary)">82</div>
+      <span class="kpi-badge badge-good">مُقيَّمة ومحللة</span>
+    </div>
+    <div class="kpi-card excellent">
+      <div class="kpi-label">مخاطر عالية الخطورة</div>
+      <div class="kpi-value" style="color:var(--excellent)">0</div>
+      <span class="kpi-badge badge-excellent">لا توجد</span>
+    </div>
+    <div class="kpi-card good">
+      <div class="kpi-label">مخاطر متوسطة الخطورة</div>
+      <div class="kpi-value" style="color:var(--good)">13</div>
+      <span class="kpi-badge badge-good">15.9%</span>
+    </div>
+    <div class="kpi-card excellent">
+      <div class="kpi-label">مخاطر منخفضة الخطورة</div>
+      <div class="kpi-value" style="color:var(--excellent)">69</div>
+      <span class="kpi-badge badge-excellent">84.1%</span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="chart-box w2">
+      <div class="chart-title">توزيع المخاطر حسب الفئة</div>
+      <div class="chart-wrap-lg"><canvas id="riskCatChart"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">توزيع مستويات الخطورة</div>
+      <div class="chart-wrap"><canvas id="riskLevelChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Risk Matrix Summary -->
+  <div class="sub-title">المخاطر المتوسطة الخطورة — تفاصيل وخطط المعالجة</div>
+  <table class="data-table mb-4">
+    <thead>
+      <tr><th>الخطر</th><th>الفئة</th><th>درجة الخطر</th><th>مستوى الاحتمالية</th><th>الأثر</th><th>استراتيجية المعالجة</th><th>الإجراءات الرئيسية</th></tr>
+    </thead>
+    <tbody>
+      <tr class="clickable" onclick="toggleRowDetail('r1')">
+        <td>ضعف القدرة على الاستدامة المالية</td><td>مالية</td><td><span class="priority-high">12</span></td><td>متوسط</td><td>عالي</td><td>خفض</td>
+        <td>اضغط للتفاصيل ▼</td>
+      </tr>
+      <tr id="r1" class="integration-detail"><td colspan="7">
+        <div class="analysis-item"><span class="label">الإجراءات:</span><span class="value">الاستعانة بجهات متخصصة في الاستثمار، البحث عن فرص استثمارية، تخصيص أوقاف مستدامة</span></div>
+        <div class="analysis-item"><span class="label">المؤشرات:</span><span class="value">نسبة العائد على الأوقاف، نسبة تغطية مصروفات الجمعية، عدد مشاريع الاستثمار</span></div>
+      </td></tr>
+      <tr class="clickable" onclick="toggleRowDetail('r2')">
+        <td>ضعف التبرع من الداعمين</td><td>مالية</td><td><span class="priority-med">8</span></td><td>ممكن</td><td>متوسط</td><td>خفض</td>
+        <td>اضغط للتفاصيل ▼</td>
+      </tr>
+      <tr id="r2" class="integration-detail"><td colspan="7">
+        <div class="analysis-item"><span class="label">الإجراءات:</span><span class="value">بناء قواعد بيانات الداعمين، تعزيز الشفافية، ابتكار أساليب جمع التبرعات</span></div>
+      </td></tr>
+      <tr class="clickable" onclick="toggleRowDetail('r3')">
+        <td>ضعف الكفاية المالية</td><td>مالية</td><td><span class="priority-med">8</span></td><td>ممكن</td><td>متوسط</td><td>خفض</td>
+        <td>اضغط للتفاصيل ▼</td>
+      </tr>
+      <tr id="r3" class="integration-detail"><td colspan="7">
+        <div class="analysis-item"><span class="label">الإجراءات:</span><span class="value">ترشيد الإنفاق، إعادة هيكلة الخدمات، التخطيط المالي الفاعل، تعاون مع جهات دعم تشغيلي</span></div>
+      </td></tr>
+      <tr class="clickable" onclick="toggleRowDetail('r4')">
+        <td>التأخر في الإفصاح عن التقارير</td><td>حوكمة</td><td><span class="priority-med">8</span></td><td>ممكن</td><td>متوسط</td><td>خفض</td>
+        <td>اضغط للتفاصيل ▼</td>
+      </tr>
+      <tr id="r4" class="integration-detail"><td colspan="7">
+        <div class="analysis-item"><span class="label">الإجراءات:</span><span class="value">جدول زمني ملزم للإفصاح، تفعيل الرقابة الداخلية، ربط الالتزام بتقييم الأداء</span></div>
+      </td></tr>
+      <tr>
+        <td>مخاطر التشغيل المتوسطة (3)</td><td>تشغيلية</td><td><span class="priority-med">متوسط</span></td><td>متوسط</td><td>متوسط</td><td>خفض</td>
+        <td>خطط معالجة مفعلة</td>
+      </tr>
+      <tr>
+        <td>مخاطر الموارد البشرية المتوسطة (3)</td><td>موارد بشرية</td><td><span class="priority-med">متوسط</span></td><td>متوسط</td><td>متوسط</td><td>خفض</td>
+        <td>خطط معالجة مفعلة</td>
+      </tr>
+      <tr>
+        <td>مخاطر المستفيدين المتوسطة (1)</td><td>مستفيدون</td><td><span class="priority-med">متوسط</span></td><td>محتمل</td><td>متوسط</td><td>خفض</td>
+        <td>خطط معالجة مفعلة</td>
+      </tr>
+      <tr>
+        <td>مخاطر تنظيمية متوسطة (1)</td><td>تنظيمية</td><td><span class="priority-med">متوسط</span></td><td>ممكن</td><td>متوسط</td><td>خفض</td>
+        <td>خطط معالجة مفعلة</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="alert alert-success">✅ <strong>نقطة قوة:</strong> لا توجد أي مخاطر عالية الخطورة في سجل المخاطر — يعكس نضج منظومة إدارة المخاطر لدى الجمعية.</div>
+</div>
+
+<!-- ================================================================ -->
+<!-- PAGE: FINANCIAL PERFORMANCE -->
+<!-- ================================================================ -->
+<div id="page-financial" class="page">
+  <button class="back-btn" onclick="showTab('summary')">← العودة للملخص</button>
+  <div class="section-title"><span class="icon">💰</span> الأداء المالي — الربع الأول 2026م</div>
+  <div class="text-small text-muted mb-4">المصدر: تقرير الأداء الاستراتيجي (البعد المالي) | إدارة مركز قياس الأداء</div>
+
+  <div class="alert alert-warn" style="margin-bottom:16px">
+    ⚠️ <strong>ملاحظة جودة البيانات:</strong> لم يُرفق تقرير الأداء المالي المستقل. البيانات مستخلصة من مؤشرات البعد المالي في التقرير الاستراتيجي.
+  </div>
+
+  <div class="grid-4 mb-4" style="margin-bottom:16px">
+    <div class="kpi-card excellent" onclick="toggleAnalysis('fin-total')">
+      <div class="kpi-label">أداء البعد المالي</div>
+      <div class="kpi-value" style="color:var(--excellent)">99.9%</div>
+      <span class="kpi-badge badge-excellent">ممتاز</span>
+      <div class="kpi-sub">هدفان استراتيجيان</div>
+      <div class="analysis-panel" id="fin-total">
+        <button class="close-btn" onclick="event.stopPropagation();toggleAnalysis('fin-total')">✕</button>
+        <div class="analysis-item"><span class="label">المصدر:</span><span class="value">م:2 تحقيق الموارد المالية اللازمة — يستند إلى 3 مؤشرات</span></div>
+        <div class="analysis-item"><span class="label">ملاحظة:</span><span class="value">م:1 الاستدامة المالية — دورية قياس سنوية، لم يحن موعده</span></div>
+      </div>
+    </div>
+    <div class="kpi-card excellent" onclick="toggleAnalysis('fin-donations')">
+      <div class="kpi-label">إجمالي التبرعات</div>
+      <div class="kpi-value" style="color:var(--excellent)">23.5M</div>
+      <span class="kpi-badge badge-excellent">+10.5% فوق المستهدف</span>
+      <div class="kpi-sub">مستهدف: 21.2M ريال</div>
+      <div class="analysis-panel" id="fin-donations">
+        <button class="close-btn" onclick="event.stopPropagation();toggleAnalysis('fin-donations')">✕</button>
+        <div class="analysis-item"><span class="label">المستهدف:</span><span class="value">21,240,892 ريال</span></div>
+        <div class="analysis-item"><span class="label">المتحقق:</span><span class="value">23,469,326 ريال</span></div>
+        <div class="analysis-item"><span class="label">السبب:</span><span class="value">وجود مبلغ من منصة إحسان لكفالات الأيتام لم يكن مخططاً له</span></div>
+      </div>
+    </div>
+    <div class="kpi-card excellent" onclick="toggleAnalysis('fin-volunteer')">
+      <div class="kpi-label">العائد الاقتصادي للتطوع</div>
+      <div class="kpi-value" style="color:var(--excellent)">2.45M</div>
+      <span class="kpi-badge badge-excellent">122.5% من المستهدف</span>
+      <div class="kpi-sub">مستهدف: 2M ريال</div>
+      <div class="analysis-panel" id="fin-volunteer">
+        <button class="close-btn" onclick="event.stopPropagation();toggleAnalysis('fin-volunteer')">✕</button>
+        <div class="analysis-item"><span class="label">السبب:</span><span class="value">ارتفاع إقبال المتطوعين في رمضان على النشر الإلكتروني، وتوثيق ساعات مبادرة "من أجلهم"</span></div>
+      </div>
+    </div>
+    <div class="kpi-card excellent" onclick="toggleAnalysis('fin-services')">
+      <div class="kpi-label">عائد الخدمات والخصومات</div>
+      <div class="kpi-value" style="color:var(--excellent)">3.22M</div>
+      <span class="kpi-badge badge-excellent">99.2% من المستهدف</span>
+      <div class="kpi-sub">مستهدف: 3.25M ريال</div>
+      <div class="analysis-panel" id="fin-services">
+        <button class="close-btn" onclick="event.stopPropagation();toggleAnalysis('fin-services')">✕</button>
+        <div class="analysis-item"><span class="label">الفجوة:</span><span class="value">26,416 ريال دون المستهدف — فرصة تحسين محدودة</span></div>
+        <div class="analysis-item"><span class="label">التوصية:</span><span class="value">تعزيز الشراكات وتنمية العائد من الخدمات الموردين</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="chart-box w2">
+      <div class="chart-title">مقارنة المستهدف والمتحقق في المؤشرات المالية</div>
+      <div class="chart-wrap-lg"><canvas id="finCompChart"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">توزيع مصادر الإيرادات</div>
+      <div class="chart-wrap"><canvas id="finDistChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="sub-title">القراءة التحليلية للأداء المالي</div>
+  <div class="grid-2">
+    <div class="alert alert-success">✅ <strong>استدامة قوية:</strong> تجاوز مؤشرَا التبرعات والعائد التطوعي مستهدفيهما، مما يعزز القدرة على تمويل البرامج في الربع القادم.</div>
+    <div class="alert alert-info">📋 <strong>توصية:</strong> الاستثمار في تعزيز الشراكات وتنويع مصادر الدخل لتقليل الاعتماد على التبرعات الموسمية (رمضان).</div>
+    <div class="alert alert-warn">⚠️ <strong>مخاطر مالية قائمة:</strong> 3 مخاطر مالية متوسطة تشمل ضعف الاستدامة وضعف الكفاية وضعف التبرعات — تحتاج متابعة دورية.</div>
+    <div class="alert alert-info">📊 <strong>بيانات ناقصة:</strong> تقرير الأداء المالي التفصيلي (المصروفات، الموازنة، كفاءة الإنفاق) مطلوب للقراءة الكاملة في الربع القادم.</div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- PAGE: GOVERNANCE -->
+<!-- ================================================================ -->
+<div id="page-governance" class="page">
+  <button class="back-btn" onclick="showTab('summary')">← العودة للملخص</button>
+  <div class="section-title"><span class="icon">🏛️</span> أداء الحوكمة — الربع الأول 2026م</div>
+  <div class="text-small text-muted mb-4">إدارة مركز قياس الأداء | المصدر: مؤشر التزام الجمعية بمعايير الحوكمة — المركز الوطني لتنمية القطاع غير الربحي</div>
+
+  <div class="grid-4 mb-4" style="margin-bottom:16px">
+    <div class="kpi-card excellent">
+      <div class="kpi-label">مؤشر الحوكمة العام</div>
+      <div class="kpi-value" style="color:var(--excellent)">98.8%</div>
+      <span class="kpi-badge badge-excellent">ممتاز</span>
+      <div class="kpi-sub">نسبة الأداء للمؤشر</div>
+    </div>
+    <div class="kpi-card excellent">
+      <div class="kpi-label">نسبة الالتزام بمعايير الحوكمة</div>
+      <div class="kpi-value" style="color:var(--excellent)">97.8%</div>
+      <span class="kpi-badge badge-excellent">مستهدف: 99%</span>
+      <div class="kpi-sub">فجوة: 1.2%</div>
+    </div>
+    <div class="kpi-card good">
+      <div class="kpi-label">مخاطر الحوكمة المتوسطة</div>
+      <div class="kpi-value" style="color:var(--good)">1</div>
+      <span class="kpi-badge badge-good">تأخر الإفصاح</span>
+      <div class="kpi-sub">من أصل 7 مخاطر حوكمة</div>
+    </div>
+    <div class="kpi-card pending">
+      <div class="kpi-label">تقرير حوكمة مستقل</div>
+      <div class="kpi-value" style="color:var(--pending)">—</div>
+      <span class="kpi-badge badge-pending">غير مرفق</span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="chart-box">
+      <div class="chart-title">نسبة الالتزام بمعايير الحوكمة</div>
+      <div class="chart-wrap"><canvas id="govChart"></canvas></div>
+    </div>
+    <div class="info-card" style="flex:2">
+      <div class="sub-title" style="margin-top:0">أبرز الفجوات المعروفة في الحوكمة</div>
+      <table class="data-table" style="box-shadow:none">
+        <thead><tr><th>الفجوة</th><th>المصدر</th><th>الأثر المؤسسي</th><th>الإجراء المقترح</th><th>المالك</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>التأخر في الإفصاح عن التقارير المالية</td>
+            <td>تقرير المخاطر</td>
+            <td>يؤثر على ثقة الداعمين والجهات التنظيمية</td>
+            <td>جدول زمني ملزم للإفصاح + متابعة رقابة داخلية</td>
+            <td>الإدارة المالية</td>
+          </tr>
+          <tr>
+            <td>فجوة 1.2% عن مستهدف معايير الحوكمة</td>
+            <td>التقرير الاستراتيجي</td>
+            <td>عدم بلوغ المستهدف المعتمد</td>
+            <td>تحليل المعايير ذات الفجوة ومعالجتها</td>
+            <td>إدارة الاستراتيجية والتميز</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="sub-title">البيانات المطلوبة لتفعيل التبويب بالكامل</div>
+      <div class="text-small" style="line-height:1.8">
+        <strong>البيانات الناقصة:</strong> تقرير مستقل للحوكمة يشمل: حالة اجتماعات المجلس واللجان، نسبة إغلاق قرارات المجلس السابقة، مستوى اكتمال الوثائق الحاكمة، مستوى الالتزام بمصفوفة الصلاحيات.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- PAGE: EXCELLENCE -->
+<!-- ================================================================ -->
+<div id="page-excellence" class="page">
+  <button class="back-btn" onclick="showTab('summary')">← العودة للملخص</button>
+  <div class="section-title"><span class="icon">🏆</span> أداء التميز المؤسسي — الربع الأول 2026م</div>
+  <div class="text-small text-muted mb-4">المصدر: تقرير التقييم الذاتي وفق نموذج التميز الوطني — جائزة الملك عبدالعزيز للجودة | إدارة مركز قياس الأداء</div>
+
+  <div class="grid-4 mb-4" style="margin-bottom:16px">
+    <div class="kpi-card excellent">
+      <div class="kpi-label">درجة التميز المؤسسي</div>
+      <div class="kpi-value" style="color:var(--excellent)">542</div>
+      <span class="kpi-badge badge-excellent">من 1000 درجة</span>
+      <div class="kpi-sub">مستهدف: 500 درجة — تجاوز بـ 42 درجة</div>
+    </div>
+    <div class="kpi-card excellent">
+      <div class="kpi-label">نسبة تحقق المستهدف</div>
+      <div class="kpi-value" style="color:var(--excellent)">100%</div>
+      <span class="kpi-badge badge-excellent">ممتاز</span>
+      <div class="kpi-sub">تجاوز المستهدف بنسبة 8.4%</div>
+    </div>
+    <div class="kpi-card good">
+      <div class="kpi-label">أعلى معيار</div>
+      <div class="kpi-value" style="color:var(--good)">86</div>
+      <span class="kpi-badge badge-good">من 150</span>
+      <div class="kpi-sub">إدارة العمليات والمنتجات</div>
+    </div>
+    <div class="kpi-card good">
+      <div class="kpi-label">أدنى معيار</div>
+      <div class="kpi-value" style="color:var(--good)">57</div>
+      <span class="kpi-badge badge-good">من 100</span>
+      <div class="kpi-sub">التخطيط الاستراتيجي</div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="chart-box w2">
+      <div class="chart-title">درجات معايير التميز المؤسسي (نموذج جائزة الملك عبدالعزيز)</div>
+      <div class="chart-wrap-lg"><canvas id="excellenceChart"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">نسبة التحقق من إجمالي الدرجة (1000)</div>
+      <div class="chart-wrap"><canvas id="excellencePieChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="sub-title">تفاصيل معايير التميز</div>
+  <table class="data-table mb-4">
+    <thead>
+      <tr><th>المعيار</th><th>الدرجة الكاملة</th><th>المستهدف</th><th>المتحقق</th><th>نسبة التحقق من المستهدف</th><th>الحالة</th></tr>
+    </thead>
+    <tbody>
+      <tr onclick="toggleRowDetail('e1')" class="clickable">
+        <td>القيادة الإدارية</td><td>150</td><td>70</td><td><strong>66</strong></td>
+        <td><div class="progress-bar-wrap" style="width:120px"><div class="progress-bar-fill fill-good" style="width:94.3%"></div></div> 94.3%</td>
+        <td><span class="kpi-badge badge-good">جيد</span></td>
+      </tr>
+      <tr id="e1" class="integration-detail"><td colspan="6">
+        <div class="analysis-item"><span class="label">الفجوة:</span><span class="value">4 درجات دون المستهدف (70) — أدنى نسبة تحقق من الدرجة الكاملة (44%)</span></div>
+        <div class="analysis-item"><span class="label">التوصية:</span><span class="value">تعزيز ممارسات القيادة الإدارية وتوثيق الأدلة الداعمة</span></div>
+      </td></tr>
+      <tr><td>التخطيط الاستراتيجي</td><td>100</td><td>53</td><td><strong>57</strong></td>
+        <td><div class="progress-bar-wrap" style="width:120px"><div class="progress-bar-fill fill-excellent" style="width:100%"></div></div> 107.5%</td>
+        <td><span class="kpi-badge badge-excellent">فوق المستهدف</span></td>
+      </tr>
+      <tr><td>الموارد البشرية</td><td>100</td><td>65</td><td><strong>64</strong></td>
+        <td><div class="progress-bar-wrap" style="width:120px"><div class="progress-bar-fill fill-good" style="width:98.5%"></div></div> 98.5%</td>
+        <td><span class="kpi-badge badge-excellent">جيد جداً</span></td>
+      </tr>
+      <tr><td>الشراكات والموارد</td><td>100</td><td>—</td><td><strong>66</strong></td>
+        <td>—</td><td><span class="kpi-badge badge-good">66%</span></td>
+      </tr>
+      <tr><td>إدارة العمليات والمنتجات والخدمات</td><td>150</td><td>—</td><td><strong>86</strong></td>
+        <td>—</td><td><span class="kpi-badge badge-good">57.3%</span></td>
+      </tr>
+      <tr><td>نتائج المستفيدين</td><td>150</td><td>—</td><td><strong>69</strong></td>
+        <td>—</td><td><span class="kpi-badge badge-weak">46%</span></td>
+      </tr>
+      <tr><td>نتائج الموارد البشرية</td><td>100</td><td>72</td><td><strong>66</strong></td>
+        <td><div class="progress-bar-wrap" style="width:120px"><div class="progress-bar-fill fill-good" style="width:91.7%"></div></div> 91.7%</td>
+        <td><span class="kpi-badge badge-excellent">جيد جداً</span></td>
+      </tr>
+      <tr><td>نتائج الأداء الرئيسية</td><td>150</td><td>—</td><td><strong>68</strong></td>
+        <td>—</td><td><span class="kpi-badge badge-weak">45.3%</span></td>
+      </tr>
+      <tr style="background:#f8fafc;font-weight:700">
+        <td>الإجمالي</td><td>1000</td><td>500</td><td>542</td>
+        <td><div class="progress-bar-wrap" style="width:120px"><div class="progress-bar-fill fill-excellent" style="width:100%"></div></div> 108.4%</td>
+        <td><span class="kpi-badge badge-excellent">فوق المستهدف</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="grid-2">
+    <div class="alert alert-success">✅ <strong>نقطة قوة:</strong> تجاوز الجمعية مستهدف 500 درجة بتحقيق 542 درجة يعكس نضجاً مؤسسياً متقدماً.</div>
+    <div class="alert alert-warn">⚠️ <strong>فرصة تحسين:</strong> نتائج المستفيدين (69/150 = 46%) هي أدنى درجة مطلقة، وترتبط بالضعف في بعد المستفيدين الاستراتيجي.</div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- PAGE: INTEGRATION -->
+<!-- ================================================================ -->
+<div id="page-integration" class="page">
+  <button class="back-btn" onclick="showTab('summary')">← العودة للملخص</button>
+  <div class="section-title"><span class="icon">🔗</span> القراءة التكاملية — الربع الأول 2026م</div>
+  <div class="text-small text-muted mb-4">إدارة مركز قياس الأداء | تحليل الترابط بين جميع محاور الأداء المؤسسي</div>
+
+  <table class="data-table mb-4">
+    <thead>
+      <tr>
+        <th style="min-width:220px">الملاحظة التكاملية</th>
+        <th>التقارير المرتبطة</th>
+        <th>الدلالة المؤسسية</th>
+        <th>الأهمية</th>
+        <th>الإجراء المقترح</th>
+        <th>المالك</th>
+        <th>الموعد</th>
+        <th>نوع القرار</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="integration-row clickable" onclick="toggleRowDetail('int1')">
+        <td><strong>انخفاض بعد المستفيدين مرتبط بضعف التنفيذ التشغيلي</strong></td>
+        <td>الاستراتيجي + التشغيلي</td>
+        <td>إدارة التمكين الاقتصادي (46.9%) تُضعف الهدف الاستراتيجي س5 (46.4%)</td>
+        <td><span class="priority-high">عالية جداً</span></td>
+        <td>▼ اضغط للتفاصيل</td>
+        <td>المدير التنفيذي</td>
+        <td>Q2 2026</td>
+        <td><span class="priority-high">قرار مجلس</span></td>
+      </tr>
+      <tr id="int1" class="integration-detail"><td colspan="8">
+        <div class="analysis-item"><span class="label">التحليل:</span><span class="value">الضعف التشغيلي في إدارة التمكين ينعكس مباشرة على الأداء الاستراتيجي في بعد المستفيدين. الجمعية تحتاج قرار مجلس لمراجعة شاملة لخطة التمكين الاقتصادي وتنويع مساراته.</span></div>
+        <div class="analysis-item"><span class="label">الإجراء المطلوب:</span><span class="value">تكليف المدير التنفيذي بإعداد خطة تصحيحية خلال 30 يوماً تتضمن أهدافاً قابلة للقياس للربع الثاني.</span></div>
+      </td></tr>
+
+      <tr class="integration-row clickable" onclick="toggleRowDetail('int2')">
+        <td><strong>مخاطر مالية متوسطة (×3) تهدد الاستدامة رغم الأداء المرتفع</strong></td>
+        <td>المالي + المخاطر</td>
+        <td>التبرعات تجاوزت المستهدف لكن الاعتماد الموسمي مخاطرة بنيوية</td>
+        <td><span class="priority-high">عالية</span></td>
+        <td>▼ اضغط للتفاصيل</td>
+        <td>الإدارة التنفيذية</td>
+        <td>Q2 2026</td>
+        <td><span class="priority-med">متابعة تنفيذية</span></td>
+      </tr>
+      <tr id="int2" class="integration-detail"><td colspan="8">
+        <div class="analysis-item"><span class="label">التحليل:</span><span class="value">الأداء المالي المرتفع (99.9%) يعتمد جزء كبير منه على مكاسب موسمية (رمضان، منصة إحسان). المخاطر المالية الثلاث المتوسطة تشير إلى هشاشة الاستدامة على المدى البعيد.</span></div>
+        <div class="analysis-item"><span class="label">الإجراء:</span><span class="value">إعداد دراسة استدامة مالية تتضمن تنويع مصادر الدخل وتقليل الاعتماد الموسمي.</span></div>
+      </td></tr>
+
+      <tr class="integration-row clickable" onclick="toggleRowDetail('int3')">
+        <td><strong>الأداء الاستراتيجي الجيد في التعلم والنمو لا يُترجَم في مخرجات المستفيدين</strong></td>
+        <td>الاستراتيجي + التشغيلي + التميز</td>
+        <td>درجة عالية في العمليات (93.7%) لكن نتائج المستفيدين في التميز 46%</td>
+        <td><span class="priority-med">متوسطة</span></td>
+        <td>▼ اضغط للتفاصيل</td>
+        <td>الاستراتيجية والتميز</td>
+        <td>Q2 2026</td>
+        <td><span class="priority-med">متابعة تنفيذية</span></td>
+      </tr>
+      <tr id="int3" class="integration-detail"><td colspan="8">
+        <div class="analysis-item"><span class="label">التحليل:</span><span class="value">تفوق الجمعية في منهجيات العمل وأدواته لا يعني بالضرورة ترجمة ذلك إلى نتائج ملموسة للمستفيدين. الفجوة في نتائج المستفيدين (69/150) مقابل العمليات الممتازة تستدعي مراجعة جودة التصميم البرامجي.</span></div>
+      </td></tr>
+
+      <tr class="integration-row clickable" onclick="toggleRowDetail('int4')">
+        <td><strong>تعثر مركز البحث والابتكار يُضعف جودة بيانات القرار</strong></td>
+        <td>التشغيلي + الاستراتيجي</td>
+        <td>58.3% في مركز البحث يؤثر على جودة الأثر المقاس وبيانات البحث التتبعي</td>
+        <td><span class="priority-med">متوسطة</span></td>
+        <td>▼ اضغط للتفاصيل</td>
+        <td>مركز البحث</td>
+        <td>Q2 2026</td>
+        <td><span class="priority-med">متابعة تنفيذية</span></td>
+      </tr>
+      <tr id="int4" class="integration-detail"><td colspan="8">
+        <div class="analysis-item"><span class="label">التحليل:</span><span class="value">ضعف البحث التتبعي يعني أن بعض المؤشرات قد تعكس بيانات منقوصة. يحتاج مجلس الإدارة ضمان اكتمال بيانات البحث قبل اتخاذ قرارات توسعية.</span></div>
+      </td></tr>
+
+      <tr class="integration-row clickable" onclick="toggleRowDetail('int5')">
+        <td><strong>فجوة الحوكمة في الإفصاح تؤثر على المخاطر والسمعة</strong></td>
+        <td>الحوكمة + المخاطر</td>
+        <td>خطر متوسط (درجة 8) للتأخر في الإفصاح المالي يمس الثقة المؤسسية</td>
+        <td><span class="priority-med">متوسطة</span></td>
+        <td>▼ اضغط للتفاصيل</td>
+        <td>الإدارة المالية + القانونية</td>
+        <td>Q1 مستمر</td>
+        <td><span class="priority-med">متابعة تنفيذية</span></td>
+      </tr>
+      <tr id="int5" class="integration-detail"><td colspan="8">
+        <div class="analysis-item"><span class="label">التحليل:</span><span class="value">التأخر في الإفصاح عن التقارير المالية يرتبط بمخاطر السمعة وثقة الداعمين. وضع جدول زمني ملزم مع آلية رقابة داخلية سيُغلق هذا الخطر.</span></div>
+      </td></tr>
+    </tbody>
+  </table>
+
+  <div class="sub-title">أولويات التحسين المؤسسي في الربع القادم</div>
+  <div class="grid-3">
+    <div class="alert alert-danger">🔴 <strong>أولوية عاجلة:</strong> مراجعة خطة التمكين الاقتصادي وتنويع المسارات</div>
+    <div class="alert alert-warn">🟡 <strong>أولوية متوسطة:</strong> استكمال خطة البحث التتبعي وتطوير آلياته</div>
+    <div class="alert alert-info">🔵 <strong>متابعة مستمرة:</strong> رفع تقرير الحوكمة والأداء المالي والأداء الوظيفي بشكل مستقل</div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- PAGE: DECISIONS & RECOMMENDATIONS -->
+<!-- ================================================================ -->
+<div id="page-decisions" class="page">
+  <button class="back-btn" onclick="showTab('summary')">← العودة للملخص</button>
+  <div class="section-title"><span class="icon">📋</span> القرارات والتوصيات — الربع الأول 2026م</div>
+  <div class="text-small text-muted mb-4">إدارة مركز قياس الأداء | جمعية تراؤف لرعاية الأيتام بمحافظة حفر الباطن</div>
+
+  <table class="data-table mb-4">
+    <thead>
+      <tr>
+        <th style="width:40px">#</th>
+        <th>نوع المطلوب</th>
+        <th>الموضوع</th>
+        <th>المبرر</th>
+        <th>الأثر المتوقع</th>
+        <th>المالك</th>
+        <th>التاريخ</th>
+        <th>الأولوية</th>
+        <th>المصدر</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="clickable" onclick="toggleRowDetail('dec1')">
+        <td>1</td>
+        <td><span class="tag badge-weak">توجيه</span></td>
+        <td>توجيه المدير التنفيذي بمراجعة خطة التمكين الاقتصادي</td>
+        <td>46.9% أداء تشغيلي — أدنى مستوى</td>
+        <td>رفع أداء الإدارة لـ70%+ في Q2</td>
+        <td>المدير التنفيذي</td>
+        <td>Q2 2026</td>
+        <td><span class="priority-high">عاجل</span></td>
+        <td>التشغيلي</td>
+      </tr>
+      <tr id="dec1" class="integration-detail"><td colspan="9">
+        <div class="analysis-item"><span class="label">التفاصيل:</span><span class="value">إعداد خطة تصحيحية تتضمن: تنويع مسارات التمكين البديلة، تعزيز الاستقطاب، مؤشرات أداء ربعية قابلة للقياس</span></div>
+      </td></tr>
+      <tr>
+        <td>2</td>
+        <td><span class="tag badge-weak">اعتماد</span></td>
+        <td>اعتماد خطة تنويع مصادر الدخل لتقليل الاعتماد الموسمي</td>
+        <td>3 مخاطر مالية متوسطة + اعتماد على رمضان</td>
+        <td>تعزيز الاستدامة المالية طويلة المدى</td>
+        <td>المدير المالي</td>
+        <td>Q2 2026</td>
+        <td><span class="priority-high">عالية</span></td>
+        <td>المالي + المخاطر</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><span class="tag badge-good">متابعة</span></td>
+        <td>متابعة أداء إدارة التمكين الاقتصادي في الربع القادم</td>
+        <td>الانحراف الجوهري الأبرز في الأداء التشغيلي</td>
+        <td>ضمان التحسين المستهدف</td>
+        <td>مجلس الإدارة</td>
+        <td>Q2 2026</td>
+        <td><span class="priority-high">عالية</span></td>
+        <td>التشغيلي</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><span class="tag badge-good">توجيه</span></td>
+        <td>اعتماد آلية بديلة لتأهيل الأبناء لسوق العمل</td>
+        <td>الهدف الاستراتيجي س5 = 46.4% ضعيف</td>
+        <td>رفع الأداء الاستراتيجي في بعد المستفيدين</td>
+        <td>إدارة التمكين الاقتصادي</td>
+        <td>Q2 2026</td>
+        <td><span class="priority-high">عالية</span></td>
+        <td>الاستراتيجي</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><span class="tag">إحاطة</span></td>
+        <td>إحاطة مجلس الإدارة بفجوة البيانات (المالي + الوظيفي)</td>
+        <td>غياب تقريرَي الأداء المالي والوظيفي المستقلَّين</td>
+        <td>اتخاذ قرارات مستنيرة في الربع القادم</td>
+        <td>إدارة مركز قياس الأداء</td>
+        <td>Q2 2026</td>
+        <td><span class="priority-med">متوسطة</span></td>
+        <td>جودة البيانات</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td><span class="tag badge-good">توجيه</span></td>
+        <td>تطوير برامج القيادة للبنين لرفع المشاركة</td>
+        <td>نادي البنين: 0% في القدرات القيادية</td>
+        <td>تحقيق الهدف الاستراتيجي س6</td>
+        <td>نادي تراؤف للبنين</td>
+        <td>Q2 2026</td>
+        <td><span class="priority-med">متوسطة</span></td>
+        <td>الاستراتيجي</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td><span class="tag">متابعة</span></td>
+        <td>وضع جدول زمني ملزم للإفصاح المالي</td>
+        <td>خطر حوكمة متوسط: التأخر في الإفصاح</td>
+        <td>إغلاق خطر الحوكمة وتعزيز ثقة الداعمين</td>
+        <td>الإدارة المالية + القانونية</td>
+        <td>مستمر</td>
+        <td><span class="priority-med">متوسطة</span></td>
+        <td>المخاطر + الحوكمة</td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td><span class="tag">توجيه</span></td>
+        <td>تعزيز مسارات التأهيل لأمهات الأيتام قبل التمكين</td>
+        <td>فجوة التكامل: تمكين 100% مقابل تأهيل 45%</td>
+        <td>استدامة نتائج التمكين الاقتصادي</td>
+        <td>إدارة التمكين الاقتصادي</td>
+        <td>Q2 2026</td>
+        <td><span class="priority-low">منخفضة</span></td>
+        <td>الاستراتيجي</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td><span class="tag">متابعة</span></td>
+        <td>تطوير القنوات الإعلامية الضعيفة (تيليجرام، لينكدإن)</td>
+        <td>نسبة الوسائل المفعلة 94.9% والظهور الإعلامي 55%</td>
+        <td>رفع الأداء الإعلامي وتعزيز السمعة</td>
+        <td>إدارة التسويق</td>
+        <td>Q2 2026</td>
+        <td><span class="priority-low">منخفضة</span></td>
+        <td>التشغيلي + الاستراتيجي</td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td><span class="tag badge-excellent">اعتماد</span></td>
+        <td>اعتماد خطة استثمار الأوقاف والاستدامة المالية</td>
+        <td>خطر مالي بدرجة 12 (أعلى مخاطرة مالية)</td>
+        <td>تقليل الاعتماد على التبرعات وتعزيز الاستقلالية</td>
+        <td>المدير المالي + مجلس الإدارة</td>
+        <td>Q3 2026</td>
+        <td><span class="priority-high">عالية</span></td>
+        <td>المخاطر المالية</td>
+      </tr>
+      <tr>
+        <td>11</td>
+        <td><span class="tag">متابعة</span></td>
+        <td>استكمال دليل التحسين المستمر في مركز البحث والابتكار</td>
+        <td>58.3% أداء تشغيلي وعدم اكتمال البحث التتبعي</td>
+        <td>تحسين جودة بيانات القرار المؤسسي</td>
+        <td>مركز البحث والابتكار</td>
+        <td>Q2 2026</td>
+        <td><span class="priority-med">متوسطة</span></td>
+        <td>التشغيلي</td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td><span class="tag">إحاطة</span></td>
+        <td>الاطلاع على نتائج التميز المؤسسي 542/1000</td>
+        <td>تجاوز المستهدف يستحق الإحاطة والتعزيز</td>
+        <td>الحفاظ على مستوى التميز ورفعه</td>
+        <td>إدارة الاستراتيجية والتميز</td>
+        <td>Q2 2026</td>
+        <td><span class="priority-low">منخفضة</span></td>
+        <td>التميز المؤسسي</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ================================================================ -->
+<!-- PAGE: DATA SOURCES -->
+<!-- ================================================================ -->
+<div id="page-datasources" class="page">
+  <div class="section-title"><span class="icon">🗄️</span> إدارة مصادر البيانات والمرفقات</div>
+  <div class="text-small text-muted mb-4">إدارة مركز قياس الأداء | هذا التبويب هو أساس التوسع المستقبلي للداشبورد</div>
+
+  <div class="alert alert-info" style="margin-bottom:16px">
+    📌 <strong>ملاحظة للمطور:</strong> لإضافة تقرير جديد، أضف صفاً جديداً في الجدول أدناه، وأنشئ تبويباً جديداً في القائمة العلوية، وربطه بالتبويب الجديد دون الحاجة لإعادة تصميم الداشبورد.
+  </div>
+
+  <div style="overflow-x:auto">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>#</th><th>اسم التقرير</th><th>النوع</th><th>الفترة</th>
+          <th>الجهة المالكة</th><th>الجهة المعدة</th><th>تاريخ الإصدار</th>
+          <th>التبويب المرتبط</th><th>المؤشرات المستخرجة</th>
+          <th>حالة جودة البيانات</th><th>حالة الربط</th><th>ملاحظات</th>
+          <th>تبويب جديد؟</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>تقرير الأداء الاستراتيجي Q1 2026</td>
+          <td>استراتيجي</td><td>Q1 2026</td>
+          <td>إدارة الاستراتيجية والتميز المؤسسي</td>
+          <td>إدارة مركز قياس الأداء</td>
+          <td>2026م</td>
+          <td>الأداء الاستراتيجي + الملخص</td>
+          <td>90.1% عام | 5 أبعاد | 26 هدف | 49 مؤشر | المسار التاريخي</td>
+          <td><span class="tag status-linked">مكتملة</span></td>
+          <td><span class="tag status-linked">مرتبط</span></td>
+          <td>—</td>
+          <td>لا</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>تقرير الأداء التشغيلي Q1 2026</td>
+          <td>تشغيلي</td><td>Q1 2026</td>
+          <td>إدارة الاستراتيجية والتميز المؤسسي</td>
+          <td>إدارة مركز قياس الأداء</td>
+          <td>2026م</td>
+          <td>الأداء التشغيلي</td>
+          <td>83.6% كلي | 14 إدارة | 114 وثيقة | المبادرات والأنشطة</td>
+          <td><span class="tag status-linked">مكتملة</span></td>
+          <td><span class="tag status-linked">مرتبط</span></td>
+          <td>—</td>
+          <td>لا</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>تقرير تقييم المخاطر 2025</td>
+          <td>مخاطر</td><td>2025</td>
+          <td>إدارة الاستراتيجية والتميز المؤسسي</td>
+          <td>إدارة مركز قياس الأداء</td>
+          <td>2025م</td>
+          <td>أداء المخاطر</td>
+          <td>82 مخاطرة | 0 عالية | 13 متوسطة | 69 منخفضة | خطط المعالجة</td>
+          <td><span class="tag status-linked">مكتملة</span></td>
+          <td><span class="tag status-linked">مرتبط</span></td>
+          <td>—</td>
+          <td>لا</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>تقرير التقييم الذاتي — التميز الوطني Q1 2026</td>
+          <td>تميز مؤسسي</td><td>Q1 2026</td>
+          <td>إدارة الاستراتيجية والتميز المؤسسي</td>
+          <td>إدارة مركز قياس الأداء</td>
+          <td>2026م</td>
+          <td>التميز المؤسسي</td>
+          <td>542/1000 درجة | 8 معايير | مستهدف 500</td>
+          <td><span class="tag status-linked">مكتملة</span></td>
+          <td><span class="tag status-linked">مرتبط</span></td>
+          <td>—</td>
+          <td>لا</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>تقرير الأداء الوظيفي Q1 2026</td>
+          <td>وظيفي</td><td>Q1 2026</td>
+          <td>إدارة الموارد البشرية</td>
+          <td>إدارة مركز قياس الأداء</td>
+          <td>—</td>
+          <td>الأداء الوظيفي</td>
+          <td>—</td>
+          <td><span class="tag status-unavail">غير متاحة</span></td>
+          <td><span class="tag status-incomplete">غير مكتمل</span></td>
+          <td>مطلوب في Q2</td>
+          <td>لا</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>تقرير الأداء المالي Q1 2026</td>
+          <td>مالي</td><td>Q1 2026</td>
+          <td>الإدارة المالية</td>
+          <td>إدارة مركز قياس الأداء</td>
+          <td>—</td>
+          <td>الأداء المالي</td>
+          <td>—</td>
+          <td><span class="tag status-update">جزئية</span></td>
+          <td><span class="tag status-update">يحتاج تحديث</span></td>
+          <td>بيانات مستخلصة من الاستراتيجي فقط</td>
+          <td>لا</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>تقرير الحوكمة Q1 2026</td>
+          <td>حوكمة</td><td>Q1 2026</td>
+          <td>أمانة المجلس</td>
+          <td>إدارة مركز قياس الأداء</td>
+          <td>—</td>
+          <td>أداء الحوكمة</td>
+          <td>—</td>
+          <td><span class="tag status-update">جزئية</span></td>
+          <td><span class="tag status-update">يحتاج تحديث</span></td>
+          <td>بيانات مستخلصة من مؤشر الحوكمة الاستراتيجي</td>
+          <td>لا</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sub-title mt-4" style="margin-top:20px">جدول فجوات البيانات</div>
+  <table class="data-table">
+    <thead><tr><th>موضع الفجوة</th><th>التقرير المرتبط</th><th>أثر الفجوة على القراءة</th><th>البيانات المطلوبة</th><th>الجهة المالكة</th><th>الإجراء المقترح</th></tr></thead>
+    <tbody>
+      <tr><td>الأداء الوظيفي</td><td>تقرير الأداء الوظيفي</td><td>لا يمكن قراءة القدرة المؤسسية بالكامل</td><td>تقييمات الأداء الفردي، توزيع المستويات</td><td>الموارد البشرية</td><td>رفع التقرير في Q2</td></tr>
+      <tr><td>الأداء المالي التفصيلي</td><td>تقرير الأداء المالي</td><td>لا تتوفر بيانات المصروفات والموازنة وكفاءة الإنفاق</td><td>الموازنة التقديرية والفعلية، كفاءة الإنفاق</td><td>الإدارة المالية</td><td>رفع التقرير في Q2</td></tr>
+      <tr><td>الحوكمة التفصيلية</td><td>تقرير الحوكمة</td><td>لا تتوفر بيانات اجتماعات المجلس وإغلاق القرارات</td><td>محاضر المجلس، متابعة القرارات، مصفوفة الصلاحيات</td><td>أمانة المجلس</td><td>رفع التقرير في Q2</td></tr>
+      <tr><td>تاريخ إصدار بعض التقارير</td><td>جميع التقارير</td><td>لا يمكن التحقق من توقيت الإعداد</td><td>تاريخ الإصدار الرسمي</td><td>إدارة مركز قياس الأداء</td><td>إضافة التاريخ في النسخ القادمة</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ================================================================ -->
+<!-- PAGE: ATTACHMENTS -->
+<!-- ================================================================ -->
+<div id="page-attachments" class="page">
+  <div class="section-title"><span class="icon">📎</span> المرفقات والتقارير الأصلية</div>
+  <div class="text-small text-muted mb-4">إدارة مركز قياس الأداء | جمعية تراؤف لرعاية الأيتام بمحافظة حفر الباطن</div>
+
+  <div class="grid-3">
+    <div id="att-strat" class="info-card" style="border-right:4px solid var(--excellent)">
+      <div style="font-size:22px margin-bottom:8px">📈</div>
+      <div class="card-header-title" style="margin-bottom:8px">تقرير الأداء الاستراتيجي</div>
+      <div class="text-small text-muted" style="line-height:1.8">
+        <strong>النوع:</strong> استراتيجي<br>
+        <strong>الفترة:</strong> Q1 2026<br>
+        <strong>الجهة المالكة:</strong> إدارة الاستراتيجية والتميز<br>
+        <strong>الجهة المعدة:</strong> إدارة مركز قياس الأداء
+      </div>
+      <div style="margin-top:10px"><span class="tag status-linked">مرتبط ✓</span></div>
+      <button class="btn-primary" style="margin-top:12px;width:100%" onclick="showTab('strategic')">فتح التبويب المرتبط</button>
+    </div>
+
+    <div class="info-card" style="border-right:4px solid var(--good)">
+      <div style="font-size:22px;margin-bottom:8px">⚙️</div>
+      <div class="card-header-title" style="margin-bottom:8px">تقرير الأداء التشغيلي</div>
+      <div class="text-small text-muted" style="line-height:1.8">
+        <strong>النوع:</strong> تشغيلي<br>
+        <strong>الفترة:</strong> Q1 2026<br>
+        <strong>الجهة المالكة:</strong> إدارة الاستراتيجية والتميز<br>
+        <strong>الجهة المعدة:</strong> إدارة مركز قياس الأداء
+      </div>
+      <div style="margin-top:10px"><span class="tag status-linked">مرتبط ✓</span></div>
+      <button class="btn-primary" style="margin-top:12px;width:100%" onclick="showTab('operational')">فتح التبويب المرتبط</button>
+    </div>
+
+    <div class="info-card" style="border-right:4px solid var(--pending)">
+      <div style="font-size:22px;margin-bottom:8px">👥</div>
+      <div class="card-header-title" style="margin-bottom:8px">تقرير الأداء الوظيفي</div>
+      <div class="text-small text-muted" style="line-height:1.8">
+        <strong>النوع:</strong> وظيفي<br>
+        <strong>الفترة:</strong> Q1 2026<br>
+        <strong>الجهة المالكة:</strong> إدارة الموارد البشرية<br>
+        <strong>الجهة المعدة:</strong> إدارة مركز قياس الأداء
+      </div>
+      <div style="margin-top:10px"><span class="tag status-incomplete">غير مكتمل</span></div>
+      <button class="btn-primary" style="margin-top:12px;width:100%;background:var(--pending)" onclick="showTab('hrperf')">فتح التبويب</button>
+    </div>
+
+    <div class="info-card" style="border-right:4px solid var(--good)">
+      <div style="font-size:22px;margin-bottom:8px">⚠️</div>
+      <div class="card-header-title" style="margin-bottom:8px">تقرير تقييم المخاطر 2025</div>
+      <div class="text-small text-muted" style="line-height:1.8">
+        <strong>النوع:</strong> مخاطر<br>
+        <strong>الفترة:</strong> 2025<br>
+        <strong>الجهة المالكة:</strong> إدارة الاستراتيجية والتميز<br>
+        <strong>الجهة المعدة:</strong> إدارة مركز قياس الأداء
+      </div>
+      <div style="margin-top:10px"><span class="tag status-linked">مرتبط ✓</span></div>
+      <button class="btn-primary" style="margin-top:12px;width:100%" onclick="showTab('risks')">فتح التبويب المرتبط</button>
+    </div>
+
+    <div class="info-card" style="border-right:4px solid var(--pending)">
+      <div style="font-size:22px;margin-bottom:8px">💰</div>
+      <div class="card-header-title" style="margin-bottom:8px">تقرير الأداء المالي Q1 2026</div>
+      <div class="text-small text-muted" style="line-height:1.8">
+        <strong>النوع:</strong> مالي<br>
+        <strong>الفترة:</strong> Q1 2026<br>
+        <strong>الجهة المالكة:</strong> الإدارة المالية<br>
+        <strong>الجهة المعدة:</strong> إدارة مركز قياس الأداء
+      </div>
+      <div style="margin-top:10px"><span class="tag status-update">يحتاج تحديث</span></div>
+      <button class="btn-primary" style="margin-top:12px;width:100%" onclick="showTab('financial')">فتح التبويب</button>
+    </div>
+
+    <div class="info-card" style="border-right:4px solid var(--excellent)">
+      <div style="font-size:22px;margin-bottom:8px">🏆</div>
+      <div class="card-header-title" style="margin-bottom:8px">تقرير التقييم الذاتي — التميز الوطني</div>
+      <div class="text-small text-muted" style="line-height:1.8">
+        <strong>النوع:</strong> تميز مؤسسي<br>
+        <strong>الفترة:</strong> Q1 2026<br>
+        <strong>الجهة المالكة:</strong> إدارة الاستراتيجية والتميز<br>
+        <strong>الجهة المعدة:</strong> إدارة مركز قياس الأداء
+      </div>
+      <div style="margin-top:10px"><span class="tag status-linked">مرتبط ✓</span></div>
+      <button class="btn-primary" style="margin-top:12px;width:100%" onclick="showTab('excellence')">فتح التبويب المرتبط</button>
+    </div>
+
+    <div class="info-card" style="border-right:4px solid var(--pending); border-style:dashed">
+      <div style="font-size:22px;margin-bottom:8px">🏛️</div>
+      <div class="card-header-title" style="margin-bottom:8px">تقرير الحوكمة Q1 2026</div>
+      <div class="text-small text-muted" style="line-height:1.8">
+        <strong>النوع:</strong> حوكمة<br>
+        <strong>الفترة:</strong> Q1 2026<br>
+        <strong>الجهة المالكة:</strong> أمانة المجلس والجمعية العمومية<br>
+        <strong>الجهة المعدة:</strong> إدارة مركز قياس الأداء
+      </div>
+      <div style="margin-top:10px"><span class="tag status-incomplete">لم يُرفق بعد</span></div>
+      <button class="btn-primary" style="margin-top:12px;width:100%;background:var(--pending)" onclick="showTab('governance')">فتح التبويب</button>
+    </div>
+
+    <!-- Add new report placeholder -->
+    <div class="info-card" style="border: 2px dashed var(--border); display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:220px;cursor:pointer" onclick="alert('لإضافة تقرير جديد: أضف صفاً في تبويب إدارة مصادر البيانات وأنشئ تبويباً جديداً')">
+      <div style="font-size:36px;margin-bottom:12px">➕</div>
+      <div class="card-header-title">إضافة تقرير جديد</div>
+      <div class="text-small text-muted" style="margin-top:6px">اضغط هنا لمعرفة كيفية إضافة تقرير جديد للداشبورد</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div>جمعية تراؤف لرعاية الأيتام بمحافظة حفر الباطن</div>
+  <div>إدارة مركز قياس الأداء | لوحة القيادة المؤسسية — الربع الأول 2026م</div>
+  <div>النسخة 1.0 | 28 أبريل 2026م</div>
+</footer>
 
 <script>
-// ═══ DATA ═══════════════════════════════════════════════════════════
-
-const data207 = [
-  {
-    id:'s1', icon:'🎯', title:'تحديد الاحتياجات المعرفية',
-    steps:[
-      {id:'s1_1',n:1,title:'تحديد الاحتياجات المعرفية للإدارات',resp:'أخصائي إدارة المعرفة',time:'ساعة',ch:'درايف القسم',instructions:'يتم تحديد الاحتياجات المعرفية للإدارات وتحديد مصادر البيانات والمعلومات والمعارف (الداخلية والخارجية) ذات الصلة بشكل ربعي'},
-      {id:'s1_2',n:2,title:'البحث عن المعارف لتوفيرها للإدارات',resp:'أخصائي إدارة المعرفة',time:'أسبوع',ch:'—',instructions:'يتم البحث عن أفضل الممارسات وفق مصادر البيانات (الداخلية والخارجية) والتي تخدم الإدارات في سد الفجوات المعرفية'},
-      {id:'s1_3',n:3,title:'إرسال المعارف للإدارات',resp:'أخصائي إدارة المعرفة',time:'ساعة',ch:'البوابة الإلكترونية',instructions:'إرسال المعارف وفق مصادر البيانات للإدارة المعنية في اتصال إداري'},
-    ]
-  },
-  {
-    id:'s2', icon:'📂', title:'حصر المعارف الصريحة',
-    steps:[
-      {id:'s2_1',n:1,title:'تصنيف المعارف الصريحة للإدارات',resp:'أخصائي المعرفة',time:'3 أيام',ch:'درايف الإدارة',instructions:'تقوم الإدارات بتعبئة النموذج المرسل لحصر وتصنيف المعرفة داخل كل إدارة على حدة وتحديد دورية رفع وتحديث هذه المعارف'},
-      {id:'s2_2',n:2,title:'حصر وتصنيف المعرفة المتوفرة في الإدارات والأقسام',resp:'أخصائي إدارة المعرفة',time:'أسبوع',ch:'درايف القسم',instructions:'يقوم أخصائي إدارة المعرفة بحصر المعرفة المتوفرة داخل الإدارة والقسم'},
-      {id:'s2_3',n:3,title:'تنظيم وتخزين وإدارة المعلومات والمعارف وأرشفتها',resp:'أخصائي إدارة المعرفة',time:'أسبوع',ch:'درايف القسم',instructions:'يتم تنظيم وتخزين وإدارة المعلومات والمعارف وأرشفتها وتحديث البيانات كل نصف سنة'},
-    ]
-  },
-  {
-    id:'s3', icon:'🧠', title:'حصر المعارف الضمنية',
-    steps:[
-      {id:'s3_1',n:1,title:'تحديد الموظفين ذوي المعارف الضمنية',resp:'أخصائي تطوير الموارد البشرية',time:'يوم عمل',ch:'البوابة الإلكترونية',instructions:'يكون اختيار الموظفين وفقاً للمعايير التالية: الخبرة — التخصصية — من لديهم ساعات تعلم عالية'},
-      {id:'s3_2',n:2,title:'إرسال نموذج حصر المعارف الضمنية',resp:'أخصائي إدارة المعرفة',time:'10 دقائق',ch:'اتصال إداري',instructions:'يتم إرسال نموذج حصر المعارف الضمنية إلى الموظف الذي تم اختياره'},
-      {id:'s3_3',n:3,title:'تعبئة نموذج حصر المعارف الضمنية',resp:'الموظف المختار',time:'أسبوع',ch:'—',instructions:'يتم تعبئة النموذج من قبل الموظف الذي تم اختياره لحصر معارفه الضمنية'},
-      {id:'s3_4',n:4,title:'تحليل وتصنيف المعارف الضمنية',resp:'أخصائي إدارة المعرفة',time:'يوم عمل',ch:'درايف القسم',instructions:'تصنيف المعارف وفق المجالات أو التخصصات'},
-      {id:'s3_5',n:5,title:'مشاركة المعرفة مع أخصائي تطوير الموارد البشرية',resp:'أخصائي إدارة المعرفة',time:'10 دقائق',ch:'البوابة الإلكترونية',instructions:'يتم مشاركة المحتوى المعرفي المصنف مع أخصائي تطوير الموارد البشرية لدراسة سبل الاستفادة منه في تطوير فريق العمل'},
-      {id:'s3_6',n:6,title:'استثمار المعرفة في برامج التطوير',resp:'أخصائي تطوير الموارد البشرية',time:'أسبوع',ch:'—',instructions:'توظف المعارف الضمنية في إعداد برامج تعلم فعالة: برامج تدريبية — جلسات عصف ذهني — حقائب تدريبية — جلسات تعلم — ورش الابتكار'},
-    ]
-  },
-  {
-    id:'s4', icon:'📢', title:'نشر المعرفة داخلياً',
-    steps:[
-      {id:'s4_1',n:1,title:'إعداد خطة نشر المعارف داخلياً',resp:'أخصائي تطوير الموارد / أخصائي إدارة المعرفة',time:'يوم عمل',ch:'درايف القسم',instructions:'يتم إعداد خطة لنشر المعرفة داخلياً وفق البيانات التالية: حصر الاحتياجات المعرفية — تقارير الأداء الاستراتيجي والتشغيلي — تقارير الأداء الوظيفي — التقارير التعقيبية'},
-      {id:'s4_2',n:2,title:'إعداد النشرة المعرفية وفق خطة النشر',resp:'أخصائي إدارة المعرفة',time:'ساعة',ch:'—',instructions:'يتم إعداد النشرات المعرفية بناءً على خطة النشر وفق المعارف الصريحة بالجمعية'},
-      {id:'s4_3',n:3,title:'إرسال النشرات المعرفية',resp:'أخصائي إدارة المعرفة',time:'10 دقائق',ch:'البوابة الإلكترونية',instructions:'إرسال النشرة المعرفية إلى أخصائي تطوير الموارد البشرية في اتصال إداري لنشرها في البوابة'},
-    ]
-  },
-  {
-    id:'s5', icon:'🤝', title:'تبادل المعرفة داخلياً',
-    steps:[
-      {id:'s5_1',n:1,title:'إعداد خطط للجلسات واللقاءات المعرفية',resp:'أخصائي تطوير الموارد البشرية',time:'ساعة',ch:'درايف القسم',instructions:'يتم إعداد خطة للجلسات المعرفية بداية العام'},
-      {id:'s5_2',n:2,title:'تحديد الموضوعات وإعداد المادة المعرفية',resp:'أخصائي إدارة المعرفة + أخصائي تطوير الموارد البشرية',time:'أسبوع',ch:'—',instructions:'يقوم أخصائي تطوير الموارد البشرية بتحديد الموضوعات من خلال الاحتياج المعرفي بالتنسيق مع قسم إدارة المعرفة'},
-      {id:'s5_3',n:3,title:'الإعلان عن جلسات ولقاءات المعرفة',resp:'أخصائي تطوير الموارد البشرية',time:'10 دقائق',ch:'البوابة الإلكترونية',instructions:'وفق خطة الإعلان عن موعد الجلسات واللقاءات المعرفية، جلسات التعاقب الوظيفي'},
-      {id:'s5_4',n:4,title:'الاستعداد والتجهيز للجلسات واللقاءات المعرفية',resp:'أخصائي تطوير الموارد البشرية',time:'نصف ساعة',ch:'—',instructions:'يتم التجهيز للجلسات برفع طلبات الصرف وتجهيز متطلبات الجلسات في حال الاحتياج لذلك'},
-      {id:'s5_5',n:5,title:'تنفيذ الجلسات واللقاءات المعرفية',resp:'أخصائي تطوير الموارد البشرية',time:'يوم عمل',ch:'—',instructions:'حسب خطة الجلسات واللقاءات المعرفية'},
-      {id:'s5_6',n:6,title:'إعداد تقرير عن مستوى تنفيذ الجلسات واللقاءات المعرفية',resp:'أخصائي تطوير الموارد البشرية',time:'ساعتين',ch:'البوابة الإلكترونية',instructions:'حسب معايير تقرير البرامج التدريبية المعتمد لدى الموارد البشرية'},
-    ]
-  },
-  {
-    id:'s6', icon:'💡', title:'حصر الدروس المستفادة',
-    steps:[
-      {id:'s6_1',n:1,title:'إرسال نموذج توثيق المبادرات والمشاريع للإدارات',resp:'أخصائي إدارة المعرفة',time:'10 دقائق',ch:'البوابة الإلكترونية',instructions:'بعد انتهاء كل مبادرة أو مشروع يتم إرسال نموذج توثيق المبادرات والمشاريع لتوثيق منجزات ونتائج كل مبادرة مع كتابة الدروس المستفادة'},
-      {id:'s6_2',n:2,title:'توثيق منجزات ونتائج كل مبادرة مع كتابة الدروس المستفادة',resp:'الإدارة المعنية',time:'أسبوع عمل',ch:'—',instructions:''},
-      {id:'s6_3',n:3,title:'فرز وتحليل الدروس المستفادة',resp:'أخصائي إدارة المعرفة',time:'يوم عمل',ch:'—',instructions:''},
-      {id:'s6_4',n:4,title:'حفظ الدروس المستفادة وأرشفتها',resp:'أخصائي إدارة المعرفة',time:'10 دقائق',ch:'—',instructions:''},
-    ]
-  }
+// ================================================================
+// DATA
+// ================================================================
+const DEPTS = [
+  {name:'مكتب المدير العام', total:98.1, init:null, docs:null},
+  {name:'الرعاية الاجتماعية', total:95.7, init:97.4, docs:94.0},
+  {name:'المدير المالي', total:95.3, init:null, docs:null},
+  {name:'أمانة المجلس والجمعية العمومية', total:93.4, init:null, docs:null},
+  {name:'الشؤون القانونية', total:93.3, init:null, docs:null},
+  {name:'الاستثمار', total:92.5, init:null, docs:null},
+  {name:'الموارد البشرية', total:90.6, init:null, docs:null},
+  {name:'الدعم المؤسسي', total:89.3, init:null, docs:null},
+  {name:'الاستراتيجية والتميز المؤسسي', total:89.0, init:null, docs:null},
+  {name:'المراجعة الداخلية', total:87.1, init:null, docs:null},
+  {name:'التسويق', total:84.3, init:null, docs:null},
+  {name:'نادي تراؤف للبنات', total:71.0, init:90.9, docs:null},
+  {name:'نادي تراؤف للبنين', total:67.1, init:82.1, docs:null},
+  {name:'عمليات المستفيدين', total:63.5, init:71.9, docs:55.1},
+  {name:'مركز البحث والابتكار', total:58.3, init:null, docs:null},
+  {name:'إدارة التمكين الاقتصادي', total:46.9, init:47.2, docs:null}
 ];
 
-const data208 = [
-  {
-    id:'e1', icon:'🔭', title:'المقارنات المرجعية',
-    steps:[
-      {id:'e1_1',n:1,title:'مخاطبة جميع الإدارات لرصد الاحتياج',resp:'أخصائي إدارة المعرفة',time:'15 دقيقة',ch:'البوابة الإلكترونية',instructions:'طلب من الإدارات تحديد التحديات أو الفرص التي تطلب مقارنة مرجعية'},
-      {id:'e1_2',n:2,title:'فرز وتصنيف احتياجات الإدارات للمقارنات المرجعية',resp:'أخصائي إدارة المعرفة',time:'ساعتين',ch:'درايف القسم',instructions:'باستخدام مصفوفة الأولويات (الأثر × الحاجة × الإمكانية)'},
-      {id:'e1_3',n:3,title:'تحديد المقارنة المرجعية',resp:'أخصائي إدارة المعرفة',time:'يومان عمل',ch:'درايف القسم',instructions:'يتم تحديد المقارنة والغرض منها: التحسين، الابتكار، تطوير الأداء. ثم يتم إرسال اتصال إداري لمخاطبة الإدارات'},
-      {id:'e1_4',n:4,title:'إعداد خطة لبرامج المقارنات المرجعية',resp:'أخصائي إدارة المعرفة',time:'ساعة',ch:'درايف الإدارة',instructions:'تشمل: الأهداف، الجهات، المحاور، الجدول الزمني، المعايير'},
-      {id:'e1_5',n:5,title:'تحديد الجهات الخارجية المستهدفة بالمقارنة المرجعية',resp:'أخصائي إدارة المعرفة + الإدارة المعنية',time:'ساعتين',ch:'—',instructions:'يتم تحديد الجهات مع الإدارات المعنية ويُفضل الجهات الحاصلة على جوائز أو المعتمدة معياريًا'},
-      {id:'e1_6',n:6,title:'رفع خطاب إلى مكتب المدير العام لمخاطبة الجهة الخارجية',resp:'أخصائي إدارة المعرفة',time:'ساعة',ch:'البوابة الإلكترونية',instructions:'يتم رفع اتصال إداري إلى مكتب المدير العام لمخاطبة الجهات الخارجية التي تم تحديدها'},
-      {id:'e1_7',n:7,title:'إعداد الجدول الزمني لتنفيذ برامج المقارنات المرجعية',resp:'أخصائي إدارة المعرفة',time:'ساعة',ch:'درايف القسم',instructions:''},
-      {id:'e1_8',n:8,title:'تنفيذ عملية المقارنة المرجعية',resp:'أخصائي إدارة المعرفة',time:'3 ساعات',ch:'—',instructions:'يتم تنفيذ المقارنة مع الجهات والإدارة المعنية من خلال: لقاء — زيارة — بيانات ومعلومات'},
-      {id:'e1_9',n:9,title:'إعداد خطة التحسين',resp:'الإدارات المعنية',time:'يومين',ch:'درايف القسم',instructions:'تشمل التحسينات، الممكنات، النتائج'},
-      {id:'e1_10',n:10,title:'متابعة تنفيذ خطة التحسين',resp:'مسؤول متابعة فرص التحسين',time:'مستمر',ch:'درايف',instructions:''},
-    ]
-  },
-  {
-    id:'e2', icon:'📝', title:'الاستبانات والبحوث والدراسات الخارجية',
-    steps:[
-      {id:'e2_1',n:1,title:'طلبات المشاركات والاستبانات الخارجية وإجراء البحوث والدراسات',resp:'مكتب المدير العام',time:'10 دقائق',ch:'البريد الإلكتروني',instructions:'استلام الطلب المقدم من الجهة أو الباحث الراغب. التأكد من أن الطلب يحتوي على: موضوع الدراسة، الجهة الباحثة، الهدف، أدوات البحث، الفئة المستهدفة'},
-      {id:'e2_2',n:2,title:'مراجعة الطلب',resp:'رئيس قسم إدارة المعرفة',time:'ساعة',ch:'—',instructions:'التحقق من مدى توافق الطلب مع سياسات وأهداف الجمعية، التأكد من خلو الطلب من أي محتوى حساس أو يخالف اللوائح التنظيمية'},
-      {id:'e2_3',n:3,title:'دراسة الطلب مع الإدارة المعنية',resp:'رئيس قسم إدارة المعرفة',time:'ساعة',ch:'—',instructions:'يتم التنسيق مع الإدارة المعنية أو اللجنة المعنية للمراجعة للموافقة أو الرفض'},
-      {id:'e2_4',n:4,title:'إبلاغ مقدم الطلب بالقرار',resp:'أخصائي إدارة المعرفة',time:'10 دقائق',ch:'—',instructions:'إرسال رد إلى مدير الإدارة ثم إلى مكتب المدير العام للرد على مقدم الطلب يتضمن الموافقة أو الاعتذار مع توضيح الأسباب في حال الرفض'},
-      {id:'e2_5',n:5,title:'تنفيذ الطلب مع الإدارة المعنية',resp:'رئيس قسم إدارة المعرفة',time:'يوم عمل',ch:'—',instructions:'التنسيق مع الإدارة ذات العلاقة لتسهيل تنفيذ الاستبانة أو البحث'},
-      {id:'e2_6',n:6,title:'أرشفة الطلب',resp:'أخصائي إدارة المعرفة',time:'10 دقائق',ch:'درايف القسم',instructions:'أرشفة نسخة من الطلب والنتائج (إن وجدت)'},
-    ]
-  },
-  {
-    id:'e3', icon:'↔️', title:'تبادل المعرفة خارجياً',
-    steps:[
-      {id:'e3_1',n:1,title:'استقبال طلب التبادل المعرفي من مكتب المدير العام',resp:'مدير مكتب المدير العام',time:'10 دقائق',ch:'البريد الإلكتروني',instructions:''},
-      {id:'e3_2',n:2,title:'تحويل الطلب إلى إدارة الاستراتيجية والتميز المؤسسي',resp:'مدير مكتب المدير العام',time:'10 دقائق',ch:'البوابة الإلكترونية',instructions:''},
-      {id:'e3_3',n:3,title:'تحويل الطلب إلى رئيس قسم إدارة المعرفة',resp:'مدير الاستراتيجية والتميز المؤسسي',time:'10 دقائق',ch:'البوابة الإلكترونية',instructions:''},
-      {id:'e3_4',n:4,title:'استقبال طلبات التبادل المعرفي',resp:'رئيس قسم إدارة المعرفة',time:'10 دقائق',ch:'—',instructions:'تحويل الطلب إلى أخصائي المعرفة لإكمال ما يلزم من متطلبات'},
-      {id:'e3_5',n:5,title:'مراجعة طلب التبادل المعرفي',resp:'أخصائي إدارة المعرفة',time:'ساعة',ch:'—',instructions:'يتم مراجعة الطلب والحصول على ضابط اتصال للتنسيق. في حال كان زيارة أو لقاء عن بُعد يتم التنسيق مع الإدارة المعنية بتجهيز المحاور وإعداد المادة بشكل منظم'},
-      {id:'e3_6',n:6,title:'إعداد مذكرة التفاهم',resp:'أخصائي إدارة المعرفة',time:'نصف ساعة',ch:'درايف القسم',instructions:'يتم إعداد مذكرة التفاهم وإرفاقها بنفس الاتصال ثم تحويلها إلى رئيس القسم ومن ثم إلى مدير الإدارة'},
-      {id:'e3_7',n:7,title:'استقبال مذكرة التفاهم بعد التوقيع',resp:'أخصائي إدارة المعرفة',time:'نصف ساعة',ch:'درايف القسم',instructions:'يتم حفظ المذكرة وتجهيز المتطلبات وإرسالها في نفس الاتصال لرئيس القسم ثم مدير الإدارة'},
-      {id:'e3_8',n:8,title:'الاعتذار عن عدم مشاركة المتطلبات المعرفية',resp:'أخصائي إدارة المعرفة',time:'10 دقائق',ch:'—',instructions:'في حال عدم إمكانية مشاركة المتطلبات المعرفية: إخطار الجهة الراغبة بالاعتذار مع ذكر المسببات'},
-      {id:'e3_9',n:9,title:'قياس رضا الجهة الطالبة للتبادل المعرفي',resp:'أخصائي إدارة المعرفة',time:'5 دقائق',ch:'درايف القسم',instructions:'يتم إرسال استبيان مبسط للجهة بعد إكمال إجراءات التبادل المعرفي (رابط الكتروني)'},
-      {id:'e3_10',n:10,title:'حفظ بيانات الجهة الراغبة ومتطلباتها',resp:'أخصائي إدارة المعرفة',time:'5 دقائق',ch:'—',instructions:''},
-    ]
-  },
-  {
-    id:'e4', icon:'📡', title:'نشر البيانات والمعارف خارجياً',
-    steps:[
-      {id:'e4_1',n:1,title:'تحديد المعارف القابلة للنشر',resp:'أخصائي إدارة المعرفة',time:'يومان عمل',ch:'—',instructions:'يتم تحديد البيانات والمعلومات والمعارف التي يمكن نشرها في بداية كل عام عبر اتصال إداري يرسل لجميع إدارات الجمعية'},
-      {id:'e4_2',n:2,title:'إشعار الإدارة المعنية',resp:'أخصائي إدارة المعرفة',time:'10 دقائق',ch:'البوابة الإلكترونية',instructions:'يتم إشعار الإدارة المعنية بإرسال البيانات والمعلومات والملفات المراد نشرها وفق دورية النشر'},
-      {id:'e4_3',n:3,title:'إرسال المادة المراد نشرها بصيغتها النهائية',resp:'الإدارة المعنية',time:'أسبوع عمل',ch:'البوابة الإلكترونية',instructions:'تجهيز المادة المراد نشرها بشكل نهائي وإرسالها في ذات الاتصال الإداري للمراجعة'},
-      {id:'e4_4',n:4,title:'مراجعة المادة وفقاً للمعايير والسياسات',resp:'أخصائي إدارة المعرفة',time:'يومان عمل',ch:'—',instructions:'مراجعة المادة للتأكد من عدم احتوائها على معلومات حساسة أو مخالفة لسياسة البيانات بمجال عمل الجمعية'},
-      {id:'e4_5',n:5,title:'نشر المعارف خارجياً',resp:'المسؤول عن القناة المعتمدة',time:'15 دقيقة',ch:'—',instructions:'يتم النشر عبر الوسائل المعتمدة مثل: موقع الجمعية الرسمي، المنصة الرقمية، وسائل التواصل، والإيميل الرسمي'},
-      {id:'e4_6',n:6,title:'توثيق المواد المنشورة',resp:'أخصائي إدارة المعرفة',time:'10 دقائق',ch:'—',instructions:'توثيق جميع المواد المنشورة خارجياً'},
-      {id:'e4_7',n:7,title:'فحص جميع القنوات',resp:'أخصائي إدارة المعرفة',time:'3 أسابيع',ch:'—',instructions:'فحص القنوات المعتمدة للنشر بشكل ربع سنوي وإعداد تقرير بالملاحظات (إن وجدت) على المواد المنشورة'},
-    ]
-  }
-];
-
-const kpisData = [
-  {id:'k1',title:'نسبة تغطية الاحتياجات المعرفية',badge:'مؤشر 1',target:100,unit:'%',period:'ربع سنوي',formula:'عدد الاحتياجات المعرفية التي تم تلبيتها ÷ عدد الاحتياجات المعرفية المستلمة × 100',source:'البوابة الإلكترونية',resp:'أخصائي إدارة المعرفة',proc:'207',current:0},
-  {id:'k2',title:'عدد المعارف الضمنية الموثقة',badge:'مؤشر 2',target:3,unit:'موظف',period:'نصف سنوي',formula:'عدد الموظفين الذين تم حصر معارفهم',source:'نموذج حصر المعارف الضمنية',resp:'أخصائي إدارة المعرفة',proc:'207',current:0},
-  {id:'k3',title:'كفاءة المقارنات المرجعية المنفذة',badge:'مؤشر 1',target:100,unit:'%',period:'ربع سنوي',formula:'عدد المقارنات المرجعية المنفذة ÷ عدد المقارنات المجدولة في الخطة السنوية × 100',source:'البوابة الإلكترونية',resp:'أخصائي التميز المؤسسي',proc:'208',current:0},
-  {id:'k4',title:'نسبة اكتمال طلبات التبادل المعرفي الخارجي',badge:'مؤشر 2',target:100,unit:'%',period:'شهري',formula:'عدد الطلبات المعرفية المنفذة ÷ إجمالي عدد الطلبات × 100',source:'نموذج التبادل الخارجي',resp:'أخصائي إدارة المعرفة',proc:'208',current:0},
-];
-
-const risksData = [
-  {n:1,risk:'فقدان قواعد بيانات ومعلومات الجمعية وعدم التحديث المستمر — فقدان قواعد معارف الجمعية',level:'h',action:'أتمتة هذه القواعد — الأمن السيبراني للمعلومات التقنية — تفعيل عملية التوثيق',resp:'أخصائي إدارة المعرفة',proc:'207'},
-  {n:2,risk:'احتفاظ العاملين أصحاب المعارف والمهارات بمعلوماتهم وعدم إتاحتها',level:'h',action:'نشر ثقافة إدارة المعرفة والحث على إفادة الآخرين وإعداد لائحة حوافز خاصة بإدارة المعرفة',resp:'أخصائي إدارة المعرفة',proc:'207'},
-  {n:3,risk:'عدم تفاعل الإدارات والأقسام بشأن المقارنات المرجعية',level:'h',action:'نشر ثقافة أهمية تفعيل المقارنات المرجعية',resp:'أخصائي التميز المؤسسي',proc:'208'},
-  {n:4,risk:'عدم دقة التقارير والبيانات من الإدارات والأقسام',level:'m',action:'العمل مبكراً مع الإدارة والقسم على كتابة التقارير والبيانات لتساهم في نجاح المقارنة المرجعية',resp:'أخصائي التميز المؤسسي',proc:'208'},
-  {n:5,risk:'قلة التفاعل مع خطة التحسين والعمل على تحقيقها',level:'m',action:'تجزئة الخطة وتزمينها بوقت مناسب وبالاتفاق مع الإدارة أو القسم المعني',resp:'أخصائي التميز المؤسسي',proc:'208'},
-];
-
-const oppsData = [
-  {n:1,opp:'توسع المعارف وإثرائها لدى العاملين بالجمعية',prob:'h',action:'زيادة عدد المواد المعرفية التي يتم اكتسابها',resp:'أخصائي إدارة المعرفة',proc:'207'},
-  {n:2,opp:'توفر البوابة الإلكترونية',prob:'h',action:'تطوير العمل على البوابة والاستفادة منها في تحقيق أهداف إدارة المعرفة',resp:'رئيس قسم إدارة المعرفة',proc:'207'},
-  {n:3,opp:'الإقبال من قبل الإدارات والأقسام على تفعيل المقارنات المرجعية مع الجهات المماثلة',prob:'m',action:'رفع نسبة الخدمات والعمليات والبرامج والأنشطة للمقارنات المرجعية',resp:'أخصائي التميز المؤسسي',proc:'208'},
-  {n:4,opp:'تنفيذ فرص التحسين وفق خطة التحسين',prob:'h',action:'تحقيق تحسينات العمليات والخدمات والوثائق',resp:'أخصائي التميز المؤسسي',proc:'208'},
-];
-
-// ═══ STATE ═══════════════════════════════════════════════════════════
-let state = {};
-
-function loadState(){
-  try{
-    const s = localStorage.getItem('km_dashboard');
-    if(s) state = JSON.parse(s);
-  }catch(e){}
+function getClass(v) {
+  if (v >= 90) return 'excellent';
+  if (v >= 70) return 'good';
+  if (v < 70) return 'weak';
+  return 'pending';
+}
+function getBadge(v) {
+  if (v >= 90) return '<span class="kpi-badge badge-excellent">ممتاز</span>';
+  if (v >= 70) return '<span class="kpi-badge badge-good">جيد</span>';
+  return '<span class="kpi-badge badge-weak">ضعيف</span>';
 }
 
-function saveState(){
-  try{ localStorage.setItem('km_dashboard', JSON.stringify(state)); }catch(e){}
+// ================================================================
+// TAB NAVIGATION
+// ================================================================
+function showTab(tab) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const tabMap = {
+    cover:'page-cover', summary:'page-summary', map:'page-map',
+    strategic:'page-strategic', operational:'page-operational',
+    hrperf:'page-hrperf', risks:'page-risks', financial:'page-financial',
+    governance:'page-governance', excellence:'page-excellence',
+    integration:'page-integration', decisions:'page-decisions',
+    datasources:'page-datasources', attachments:'page-attachments'
+  };
+  const page = document.getElementById(tabMap[tab]);
+  if(page) { page.classList.add('active'); page.scrollIntoView({block:'start'}); }
+  const btns = document.querySelectorAll('.tab-btn');
+  const tabOrder = ['cover','summary','map','strategic','operational','hrperf','risks','financial','governance','excellence','integration','decisions','datasources','attachments'];
+  const idx = tabOrder.indexOf(tab);
+  if(idx >= 0 && btns[idx]) btns[idx].classList.add('active');
+  window.scrollTo(0,0);
 }
 
-function getStatus(id){ return state[id]?.status || '0'; }
-function getNotes(id){ return state[id]?.notes || ''; }
-function setStatus(id, val){ if(!state[id]) state[id]={}; state[id].status=val; updateStats(); }
-function setNotes(id, val){ if(!state[id]) state[id]={}; state[id].notes=val; }
-function getKPI(id){ return state['kpi_'+id] !== undefined ? state['kpi_'+id] : 0; }
-function setKPI(id, val){ state['kpi_'+id] = parseFloat(val)||0; updateKPICards(); }
-
-// ═══ RENDER ══════════════════════════════════════════════════════════
-
-function statusClass(v){
-  return ['s0','s1','s2','s3'][parseInt(v)] || 's0';
+// ================================================================
+// TOGGLE PANELS
+// ================================================================
+function toggleAnalysis(id) {
+  const el = document.getElementById(id);
+  if(el) el.classList.toggle('open');
+}
+function toggleRowDetail(id) {
+  const el = document.getElementById(id);
+  if(el) el.classList.toggle('open');
 }
 
-function buildAccordions(data, container){
-  const el = document.getElementById(container);
-  el.innerHTML = '';
-  data.forEach((sec, si) => {
-    const acc = document.createElement('div');
-    acc.className = 'acc';
-    acc.id = 'acc-'+sec.id;
-
-    const hdr = document.createElement('div');
-    hdr.className = 'acc-hdr';
-    hdr.innerHTML = `
-      <div class="acc-ico">${sec.icon}</div>
-      <div class="acc-ttl">${sec.title}</div>
-      <span class="acc-prog" id="prog-${sec.id}">0 / ${sec.steps.length}</span>
-      <span class="chevron">▼</span>
-    `;
-    hdr.onclick = () => {
-      acc.classList.toggle('open');
-    };
-
-    const body = document.createElement('div');
-    body.className = 'acc-body';
-
-    const tbl = document.createElement('table');
-    tbl.className = 'steps-tbl';
-    tbl.innerHTML = `<thead><tr>
-      <th style="width:38px">م</th>
-      <th>الخطوة التنفيذية</th>
-      <th>مسؤول التنفيذ</th>
-      <th>الزمن</th>
-      <th>القناة</th>
-      <th>الحالة</th>
-      <th style="min-width:150px">ملاحظات</th>
-    </tr></thead><tbody></tbody>`;
-
-    const tbody = tbl.querySelector('tbody');
-    sec.steps.forEach(st => {
-      const tr = document.createElement('tr');
-      const sv = getStatus(st.id);
-      tr.innerHTML = `
-        <td><span class="snum">${st.n}</span></td>
-        <td><div class="sttl">${st.title}</div>${st.instructions ? `<div style="font-size:10.5px;color:var(--TM);margin-top:3px;line-height:1.4">${st.instructions.substring(0,80)}${st.instructions.length>80?'…':''}</div>` : ''}</td>
-        <td><div class="sresp">${st.resp}</div></td>
-        <td><span class="stime">${st.time}</span></td>
-        <td><span class="schn">${st.ch}</span></td>
-        <td>
-          <select class="ssel ${statusClass(sv)}" onchange="onStatus('${st.id}',this)">
-            <option value="0" ${sv==='0'?'selected':''}>لم يبدأ</option>
-            <option value="1" ${sv==='1'?'selected':''}>قيد التنفيذ</option>
-            <option value="2" ${sv==='2'?'selected':''}>مكتملة ✓</option>
-            <option value="3" ${sv==='3'?'selected':''}>موقوفة ✗</option>
-          </select>
-        </td>
-        <td>
-          <textarea class="ni" placeholder="أضف ملاحظة…" onchange="onNotes('${st.id}',this)">${getNotes(st.id)}</textarea>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
-
-    body.appendChild(tbl);
-    acc.appendChild(hdr);
-    acc.appendChild(body);
-    el.appendChild(acc);
-  });
+// ================================================================
+// BUILD DEPT TABLE
+// ================================================================
+function buildDeptTable() {
+  const tbody = document.getElementById('deptTableBody');
+  if(!tbody) return;
+  tbody.innerHTML = DEPTS.map(d => {
+    const cls = getClass(d.total);
+    const bar = `<div class="progress-bar-wrap"><div class="progress-bar-fill fill-${cls}" style="width:${d.total}%"></div></div>`;
+    return `<tr>
+      <td>${d.name}</td>
+      <td>${d.total}%<br>${bar}</td>
+      <td>${d.init ? d.init+'%' : '—'}</td>
+      <td>${d.docs ? d.docs+'%' : '—'}</td>
+      <td>${getBadge(d.total)}</td>
+      <td style="font-size:11px;color:var(--text-muted)">${d.total<70?'يحتاج متابعة عاجلة':d.total<90?'يحتاج تطوير':''}</td>
+    </tr>`;
+  }).join('');
 }
 
-function onStatus(id, sel){
-  const v = sel.value;
-  sel.className = 'ssel ' + statusClass(v);
-  setStatus(id, v);
-  updateSectionProgress();
-}
-
-function onNotes(id, ta){
-  setNotes(id, ta.value);
-}
-
-function updateSectionProgress(){
-  const allSecs = [...data207, ...data208];
-  allSecs.forEach(sec => {
-    const done = sec.steps.filter(s => getStatus(s.id)==='2').length;
-    const el = document.getElementById('prog-'+sec.id);
-    if(el) el.textContent = `${done} / ${sec.steps.length}`;
-  });
-  updateStats();
-}
-
-function calcProgress(data){
-  const total = data.reduce((a,s)=>a+s.steps.length,0);
-  const done = data.reduce((a,s)=>a+s.steps.filter(st=>getStatus(st.id)==='2').length,0);
-  return total ? Math.round(done/total*100) : 0;
-}
-
-function updateStats(){
-  const all207 = data207.flatMap(s=>s.steps);
-  const all208 = data208.flatMap(s=>s.steps);
-  const allSteps = [...all207, ...all208];
-  const total = allSteps.length;
-  const done = allSteps.filter(s=>getStatus(s.id)==='2').length;
-  const prog = allSteps.filter(s=>getStatus(s.id)==='1').length;
-  const pct = total ? Math.round(done/total*100) : 0;
-
-  document.getElementById('stat-done').textContent = done;
-  document.getElementById('stat-prog').textContent = prog;
-  document.getElementById('stat-total').textContent = total;
-  document.getElementById('stat-pct').textContent = pct+'%';
-
-  const p207 = calcProgress(data207);
-  const p208 = calcProgress(data208);
-
-  document.getElementById('nb-207').textContent = p207+'%';
-  document.getElementById('nb-208').textContent = p208+'%';
-  document.getElementById('prog-207-chip').textContent = p207+'%';
-  document.getElementById('prog-208-chip').textContent = p208+'%';
-
-  document.getElementById('ov2').textContent = p207+'%';
-  document.getElementById('ov3').textContent = p208+'%';
-  document.getElementById('ov4').textContent = pct+'%';
-  document.getElementById('ov2b').style.width = p207+'%';
-  document.getElementById('ov3b').style.width = p208+'%';
-  document.getElementById('ov4b').style.width = pct+'%';
-
-  updateSectionProgress();
-}
-
-function buildKPIs(){
-  const grid = document.getElementById('kpi-grid');
-  grid.innerHTML = '';
-  kpisData.forEach(k => {
-    const cur = getKPI(k.id);
-    const pct = k.unit==='%' ? Math.min(cur,100) : Math.min(cur/k.target*100,100);
-    const cls = pct>=80?'':'pct>=50?"warn":"danger"';
-    const fillCls = pct>=80?'':'pct>=50?warn:danger';
-    const div = document.createElement('div');
-    div.className='kpi-card';
-    div.id='kpi-card-'+k.id;
-    div.innerHTML = `
-      <div class="kpi-hdr">
-        <div class="kpi-ttl">${k.title}</div>
-        <span class="kpi-badge">إجراء ${k.proc}</span>
-      </div>
-      <div class="kpi-nums">
-        <div><span class="kpi-cur" id="kpi-cur-${k.id}">${cur}</span><span class="kpi-unit">${k.unit}</span></div>
-        <div class="kpi-tgt">المستهدف: ${k.target} ${k.unit}</div>
-      </div>
-      <div class="kpi-bar"><div class="kpi-fill ${pct<50?'danger':pct<80?'warn':''}" id="kpi-fill-${k.id}" style="width:${pct}%"></div></div>
-      <div class="kpi-tags">
-        <span class="ktag">🔁 ${k.period}</span>
-        <span class="ktag">📂 ${k.source}</span>
-        <span class="ktag">👤 ${k.resp}</span>
-      </div>
-      <div style="background:#f7faf8;border-radius:7px;padding:8px 10px;font-size:10.5px;color:var(--TM);margin-bottom:10px">
-        <strong>المعادلة:</strong> ${k.formula}
-      </div>
-      <div class="kpi-edit">
-        <span class="kpi-lbl">القيمة الفعلية:</span>
-        <input class="kpi-inp" type="number" value="${cur}" min="0" max="${k.unit==='%'?100:999}" oninput="onKPI('${k.id}',this)" />
-        <span style="font-size:11px;color:var(--TM)">${k.unit}</span>
-      </div>
-    `;
-    grid.appendChild(div);
-  });
-}
-
-function onKPI(id, inp){
-  setKPI(id, inp.value);
-  const k = kpisData.find(x=>x.id===id);
-  const cur = parseFloat(inp.value)||0;
-  const pct = k.unit==='%' ? Math.min(cur,100) : Math.min(cur/k.target*100,100);
-  document.getElementById('kpi-cur-'+id).textContent = cur;
-  const fill = document.getElementById('kpi-fill-'+id);
-  fill.style.width = pct+'%';
-  fill.className = 'kpi-fill '+(pct<50?'danger':pct<80?'warn':'');
-}
-
-function updateKPICards(){
-  kpisData.forEach(k=>{
-    const cur = getKPI(k.id);
-    const el = document.getElementById('kpi-cur-'+k.id);
-    if(el) el.textContent = cur;
-  });
-}
-
-function buildRisks(){
-  const rb = document.getElementById('risks-body');
-  rb.innerHTML = '';
-  risksData.forEach(r=>{
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${r.n}</td><td>${r.risk}</td><td><span class="rl ${r.level}">${r.level==='h'?'عالي':r.level==='m'?'متوسط':'منخفض'}</span></td><td>${r.action}</td><td>${r.resp}</td><td><span class="chip" style="font-size:10px">إجراء ${r.proc}</span></td>`;
-    rb.appendChild(tr);
-  });
-
-  const ob = document.getElementById('opps-body');
-  ob.innerHTML = '';
-  oppsData.forEach(o=>{
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${o.n}</td><td>${o.opp}</td><td><span class="rl ${o.prob}">${o.prob==='h'?'عالية':o.prob==='m'?'متوسطة':'منخفضة'}</span></td><td>${o.action}</td><td>${o.resp}</td><td><span class="chip" style="font-size:10px">إجراء ${o.proc}</span></td>`;
-    ob.appendChild(tr);
-  });
-}
-
-// ═══ NAVIGATION ══════════════════════════════════════════════════════
-
-const pageTitles = {
-  overview: ['نظرة عامة','لوحة مراقبة إدارة المعرفة المؤسسي'],
-  p207: ['ا207-ع-د | إدارة المعارف داخلياً','6 أقسام | إصدار 03 | 14/12/2025م'],
-  p208: ['ا208-ع-د | إدارة المعارف خارجياً','4 أقسام | إصدار 03 | 14/12/2025م'],
-  kpis: ['مؤشرات قياس الأداء — KPIs','4 مؤشرات | متابعة وقياس الأداء'],
-  risks: ['المخاطر والفرص','5 مخاطر | 4 فرص'],
-  guide: ['دليل نظام إدارة المعرفة','ISO 30401:2018 | الإصدار 04'],
+// ================================================================
+// CHARTS
+// ================================================================
+const COLORS = {
+  excellent: '#16a34a',
+  good: '#d97706',
+  weak: '#dc2626',
+  pending: '#94a3b8',
+  primary: '#0d2137',
+  accent: '#c8922a'
 };
 
-function showPage(el){
-  const page = el.dataset.page;
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  el.classList.add('active');
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-'+page).classList.add('active');
-  const t = pageTitles[page] || ['',''];
-  document.getElementById('top-title').textContent = t[0];
-  document.getElementById('top-sub').textContent = t[1];
+// ================================================================
+// REGISTER DATALABELS PLUGIN GLOBALLY
+// ================================================================
+Chart.register(ChartDataLabels);
+
+// ================================================================
+// SHARED HELPERS
+// ================================================================
+const chartDefaults = {
+  plugins: {
+    legend: { labels: { font: { family: 'IBM Plex Sans Arabic, sans-serif', size:12 }, rtl: true } }
+  },
+  responsive: true,
+  maintainAspectRatio: false
+};
+
+// Datalabels config for bar charts (value shown on/inside bar)
+function barDL(suffix, opts={}) {
+  return {
+    datalabels: {
+      anchor: opts.anchor || 'end',
+      align: opts.align || 'end',
+      color: opts.color || '#1a3a5c',
+      font: { family:'IBM Plex Sans Arabic, sans-serif', size: opts.size||12, weight:'700' },
+      formatter: (v) => v > 0 ? (v + (suffix||'')) : '',
+      clip: false,
+      padding: { right: 4 }
+    }
+  };
 }
 
-// ═══ SAVE / RESET ════════════════════════════════════════════════════
-
-function saveAll(){
-  // Collect all textarea values first
-  document.querySelectorAll('textarea.ni').forEach(ta => {
-    const id = ta.closest('tr')?.querySelector('select')?.getAttribute('onchange')?.match(/'([^']+)'/)?.[1];
-    if(id) setNotes(id, ta.value);
-  });
-  saveState();
-  showToast('✅ تم حفظ جميع البيانات بنجاح');
+// Datalabels config for bar charts where label is inside the bar
+function barDLInside(suffix) {
+  return {
+    datalabels: {
+      anchor:'center', align:'center',
+      color:'#fff',
+      font:{ family:'IBM Plex Sans Arabic, sans-serif', size:11, weight:'700' },
+      formatter:(v) => v > 0 ? (v+(suffix||'')) : ''
+    }
+  };
 }
 
-function resetAll(){
-  if(!confirm('هل أنت متأكد من إعادة تعيين جميع البيانات؟')) return;
-  state = {};
-  saveState();
-  location.reload();
+// Datalabels for doughnut/pie
+function pieDL(labels, data) {
+  return {
+    datalabels: {
+      color:'#fff',
+      font:{ family:'IBM Plex Sans Arabic, sans-serif', size:12, weight:'700' },
+      formatter:(v, ctx) => {
+        const pct = Math.round(v / data.reduce((a,b)=>a+b,0) * 100);
+        return pct > 4 ? v + '\n(' + pct + '%)' : '';
+      },
+      textAlign:'center'
+    }
+  };
 }
 
-function showToast(msg){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2800);
-}
+// Datalabels for line charts (above each point)
+const lineDL = {
+  datalabels: {
+    anchor:'end', align:'top', offset:4,
+    color: ctx => {
+      const v = ctx.dataset.data[ctx.dataIndex];
+      return v >= 90 ? '#16a34a' : v >= 70 ? '#d97706' : '#dc2626';
+    },
+    font:{ family:'IBM Plex Sans Arabic, sans-serif', size:10, weight:'700' },
+    formatter: v => v + '%'
+  }
+};
 
-// ═══ AUTO-SAVE ═══════════════════════════════════════════════════════
-setInterval(()=>{
-  document.querySelectorAll('textarea.ni').forEach(ta => {
-    // find id via select in same row
-    const sel = ta.closest('tr')?.querySelector('select.ssel');
-    if(sel){
-      const match = sel.getAttribute('onchange')?.match(/'([^']+)'/);
-      if(match) setNotes(match[1], ta.value);
+// ================================================================
+// INIT CHARTS
+// ================================================================
+function initCharts() {
+
+  // ── HISTORICAL LINE ───────────────────────────────────────────
+  const hCtx = document.getElementById('historicalChart');
+  if(hCtx) new Chart(hCtx, {
+    type:'line',
+    data:{
+      labels:['Q1\n2023','Q2\n2023','Q3\n2023','Q4\n2023','Q1\n2024','Q2\n2024','Q3\n2024','Q4\n2024','Q1\n2025','Q2\n2025','Q3\n2025','Q4\n2025','Q1\n2026'],
+      datasets:[{
+        label:'الأداء الاستراتيجي %',
+        data:[60.4,81.5,82.9,75.6,92.4,91.8,94.3,88.8,91.3,87.5,85.1,83.8,90.1],
+        borderColor: COLORS.accent, backgroundColor:'rgba(200,146,42,0.08)',
+        borderWidth:3, fill:true, tension:0.4,
+        pointBackgroundColor: ctx => {
+          const v = ctx.dataset.data[ctx.dataIndex];
+          return v>=90?COLORS.excellent:v>=70?COLORS.good:COLORS.weak;
+        },
+        pointRadius:6, pointHoverRadius:8
+      }]
+    },
+    options:{
+      ...chartDefaults,
+      scales:{
+        y:{ min:40, max:105, ticks:{ callback:v=>v+'%', font:{size:11} }, grid:{color:'#e5eaf0'} },
+        x:{ grid:{display:false}, ticks:{font:{size:10}} }
+      },
+      plugins:{
+        ...chartDefaults.plugins,
+        ...lineDL
+      }
     }
   });
-  saveState();
-}, 10000);
 
-// ═══ INIT ════════════════════════════════════════════════════════════
-loadState();
-buildAccordions(data207, 'acc207');
-buildAccordions(data208, 'acc208');
-buildKPIs();
-buildRisks();
-updateStats();
-updateSectionProgress();
+  // ── GOALS DISTRIBUTION DOUGHNUT ───────────────────────────────
+  const gData = [11,5,2,8];
+  const gCtx = document.getElementById('goalsDistChart');
+  if(gCtx) new Chart(gCtx, {
+    type:'doughnut',
+    data:{
+      labels:['ممتاز','جيد','ضعيف','لم يحن'],
+      datasets:[{ data:gData, backgroundColor:[COLORS.excellent,COLORS.good,COLORS.weak,COLORS.pending], borderWidth:3, borderColor:'#fff' }]
+    },
+    options:{
+      ...chartDefaults,
+      plugins:{ ...chartDefaults.plugins, legend:{position:'bottom'}, ...pieDL(null, gData) }
+    }
+  });
 
-// Open first accordion by default
-setTimeout(()=>{
-  const first207 = document.querySelector('#acc207 .acc');
-  if(first207) first207.classList.add('open');
-  const first208 = document.querySelector('#acc208 .acc');
-  if(first208) first208.classList.add('open');
-},100);
+  // ── KPI DISTRIBUTION DOUGHNUT ─────────────────────────────────
+  const kData = [18,5,3,23];
+  const kCtx = document.getElementById('kpiDistChart');
+  if(kCtx) new Chart(kCtx, {
+    type:'doughnut',
+    data:{
+      labels:['ممتاز','جيد','ضعيف','لم يحن'],
+      datasets:[{ data:kData, backgroundColor:[COLORS.excellent,COLORS.good,COLORS.weak,COLORS.pending], borderWidth:3, borderColor:'#fff' }]
+    },
+    options:{
+      ...chartDefaults,
+      plugins:{ ...chartDefaults.plugins, legend:{position:'bottom'}, ...pieDL(null, kData) }
+    }
+  });
 
-showToast('👋 مرحباً بك في لوحة إدارة المعرفة — جمعية تراؤف');
+  // ── STRATEGIC DIMENSIONS BAR ──────────────────────────────────
+  const dCtx = document.getElementById('dimensionsChart');
+  if(dCtx) new Chart(dCtx, {
+    type:'bar',
+    data:{
+      labels:['المستفيدون','أصحاب المصلحة','المالي','العمليات الداخلية','التعلم والنمو'],
+      datasets:[
+        { label:'المتحقق %', data:[81.3,100,99.9,93.7,93.9],
+          backgroundColor:[COLORS.good,COLORS.excellent,COLORS.excellent,COLORS.excellent,COLORS.excellent], borderRadius:6 },
+        { label:'المستهدف 100%', data:[100,100,100,100,100], type:'line',
+          borderColor:'rgba(200,146,42,0.6)', backgroundColor:'transparent',
+          borderDash:[6,4], borderWidth:2, pointRadius:0,
+          datalabels:{ display:false } }
+      ]
+    },
+    options:{
+      ...chartDefaults,
+      scales:{ y:{min:0,max:115,ticks:{callback:v=>v+'%'},grid:{color:'#e5eaf0'}}, x:{grid:{display:false}} },
+      plugins:{
+        ...chartDefaults.plugins,
+        datalabels:{
+          anchor:'end', align:'end', offset:2,
+          color: ctx => ctx.datasetIndex===0 ? '#1a3a5c' : 'transparent',
+          font:{ family:'IBM Plex Sans Arabic, sans-serif', size:12, weight:'700' },
+          formatter: (v, ctx) => ctx.datasetIndex===0 ? v+'%' : ''
+        }
+      }
+    }
+  });
+
+  // ── DEPARTMENTS BAR (horizontal) ─────────────────────────────
+  const depCtx = document.getElementById('deptChart');
+  if(depCtx) new Chart(depCtx, {
+    type:'bar',
+    data:{
+      labels: DEPTS.map(d=>d.name),
+      datasets:[{
+        label:'الأداء التشغيلي %',
+        data: DEPTS.map(d=>d.total),
+        backgroundColor: DEPTS.map(d=>d.total>=90?COLORS.excellent:d.total>=70?COLORS.good:COLORS.weak),
+        borderRadius:4
+      }]
+    },
+    options:{
+      ...chartDefaults, indexAxis:'y',
+      layout:{ padding:{ right: 44 } },
+      scales:{
+        x:{ min:0, max:115, ticks:{callback:v=>v+'%',font:{size:10}}, grid:{color:'#e5eaf0'} },
+        y:{ grid:{display:false}, ticks:{font:{size:11}} }
+      },
+      plugins:{
+        ...chartDefaults.plugins, legend:{display:false},
+        datalabels:{
+          anchor:'end', align:'right', offset:4,
+          color: ctx => {
+            const v = ctx.dataset.data[ctx.dataIndex];
+            return v>=90?COLORS.excellent:v>=70?COLORS.good:COLORS.weak;
+          },
+          font:{ family:'IBM Plex Sans Arabic, sans-serif', size:11, weight:'700' },
+          formatter: v => v+'%'
+        }
+      }
+    }
+  });
+
+  // ── DOCS DOUGHNUT ─────────────────────────────────────────────
+  const docsData = [65,19,30];
+  const docsCtx = document.getElementById('docsChart');
+  if(docsCtx) new Chart(docsCtx, {
+    type:'doughnut',
+    data:{
+      labels:['ممتازة','جيدة','ضعيف'],
+      datasets:[{ data:docsData, backgroundColor:[COLORS.excellent,COLORS.good,COLORS.weak], borderWidth:3, borderColor:'#fff' }]
+    },
+    options:{
+      ...chartDefaults,
+      plugins:{ ...chartDefaults.plugins, legend:{position:'bottom'}, ...pieDL(null, docsData) }
+    }
+  });
+
+  // ── RISK CATEGORIES BAR (horizontal stacked) ──────────────────
+  const rCtx = document.getElementById('riskCatChart');
+  if(rCtx) new Chart(rCtx, {
+    type:'bar',
+    data:{
+      labels:['استراتيجية','مالية','تشغيلية','حوكمة','التزام بالقوانين','تنظيمية','موارد بشرية','تقنية','خارجية','مجتمعية','مستفيدون','تعارض المصالح','إرهاب/غسيل'],
+      datasets:[
+        { label:'متوسطة', data:[1,3,3,1,0,1,3,0,0,0,1,0,0], backgroundColor:'rgba(217,119,6,0.85)', borderRadius:3 },
+        { label:'منخفضة', data:[6,3,6,6,4,5,7,6,6,3,4,7,6], backgroundColor:'rgba(22,163,74,0.85)', borderRadius:3 }
+      ]
+    },
+    options:{
+      ...chartDefaults, indexAxis:'y',
+      scales:{ x:{stacked:true,ticks:{stepSize:1}}, y:{stacked:true,grid:{display:false},ticks:{font:{size:11}}} },
+      plugins:{
+        ...chartDefaults.plugins,
+        datalabels:{
+          anchor:'center', align:'center',
+          color:'#fff',
+          font:{ family:'IBM Plex Sans Arabic, sans-serif', size:11, weight:'700' },
+          formatter: v => v > 0 ? v : ''
+        }
+      }
+    }
+  });
+
+  // ── RISK LEVEL DOUGHNUT ───────────────────────────────────────
+  const rlData = [69,13];  // 0 high risks excluded (shows as 0)
+  const rlCtx = document.getElementById('riskLevelChart');
+  if(rlCtx) new Chart(rlCtx, {
+    type:'doughnut',
+    data:{
+      labels:['منخفضة (69)','متوسطة (13)','عالية (0)'],
+      datasets:[{ data:[69,13,0.001], backgroundColor:[COLORS.excellent,COLORS.good,COLORS.weak], borderWidth:3, borderColor:'#fff' }]
+    },
+    options:{
+      ...chartDefaults,
+      plugins:{
+        ...chartDefaults.plugins, legend:{position:'bottom'},
+        datalabels:{
+          color:'#fff',
+          font:{ family:'IBM Plex Sans Arabic, sans-serif', size:13, weight:'700' },
+          formatter:(v) => v > 1 ? v : ''
+        }
+      }
+    }
+  });
+
+  // ── FINANCIAL COMPARISON BAR ──────────────────────────────────
+  const finCtx = document.getElementById('finCompChart');
+  if(finCtx) new Chart(finCtx, {
+    type:'bar',
+    data:{
+      labels:['إجمالي التبرعات','العائد الاقتصادي للتطوع','عائد الخدمات والخصومات'],
+      datasets:[
+        { label:'المستهدف', data:[21240892,2000000,3250000], backgroundColor:'rgba(200,146,42,0.35)', borderRadius:4 },
+        { label:'المتحقق', data:[23469326,2450915,3223583], backgroundColor:[COLORS.excellent,COLORS.excellent,COLORS.excellent], borderRadius:4 }
+      ]
+    },
+    options:{
+      ...chartDefaults,
+      scales:{
+        y:{ ticks:{ callback:v=>(v/1000000).toFixed(1)+'M ر', font:{size:11} }, grid:{color:'#e5eaf0'} },
+        x:{ grid:{display:false}, ticks:{font:{size:11}} }
+      },
+      plugins:{
+        ...chartDefaults.plugins,
+        datalabels:{
+          anchor:'end', align:'end', offset:2,
+          color:'#1a3a5c',
+          font:{ family:'IBM Plex Sans Arabic, sans-serif', size:10, weight:'700' },
+          formatter: v => (v/1000000).toFixed(2)+'M'
+        }
+      }
+    }
+  });
+
+  // ── FINANCIAL DISTRIBUTION PIE ────────────────────────────────
+  const fdData = [23469326,2450915,3223583];
+  const fdCtx = document.getElementById('finDistChart');
+  if(fdCtx) new Chart(fdCtx, {
+    type:'doughnut',
+    data:{
+      labels:['إجمالي التبرعات','العائد التطوعي','عائد الخدمات'],
+      datasets:[{ data:fdData, backgroundColor:[COLORS.excellent,COLORS.good,COLORS.accent], borderWidth:3, borderColor:'#fff' }]
+    },
+    options:{
+      ...chartDefaults,
+      plugins:{
+        ...chartDefaults.plugins, legend:{position:'bottom'},
+        datalabels:{
+          color:'#fff',
+          font:{ family:'IBM Plex Sans Arabic, sans-serif', size:11, weight:'700' },
+          formatter:(v) => (v/1000000).toFixed(1)+'M'
+        }
+      }
+    }
+  });
+
+  // ── GOVERNANCE BAR ────────────────────────────────────────────
+  const govCtx = document.getElementById('govChart');
+  if(govCtx) new Chart(govCtx, {
+    type:'bar',
+    data:{
+      labels:['نسبة التزام الجمعية بمعايير الحوكمة'],
+      datasets:[
+        { label:'المستهدف 99%', data:[99], backgroundColor:'rgba(200,146,42,0.3)', borderRadius:6 },
+        { label:'المتحقق 97.8%', data:[97.8], backgroundColor:COLORS.excellent, borderRadius:6 }
+      ]
+    },
+    options:{
+      ...chartDefaults,
+      scales:{ y:{min:90,max:103,ticks:{callback:v=>v+'%'}}, x:{grid:{display:false}} },
+      plugins:{
+        ...chartDefaults.plugins,
+        datalabels:{
+          anchor:'end', align:'end', offset:4,
+          color:'#1a3a5c',
+          font:{ family:'IBM Plex Sans Arabic, sans-serif', size:13, weight:'700' },
+          formatter: v => v+'%'
+        }
+      }
+    }
+  });
+
+  // ── EXCELLENCE HORIZONTAL BAR ─────────────────────────────────
+  const excCtx = document.getElementById('excellenceChart');
+  if(excCtx) new Chart(excCtx, {
+    type:'bar',
+    data:{
+      labels:['القيادة الإدارية','التخطيط الاستراتيجي','الموارد البشرية','الشراكات والموارد','إدارة العمليات','نتائج المستفيدين','نتائج الموارد البشرية','نتائج الأداء الرئيسية'],
+      datasets:[
+        {
+          label:'الدرجة المحققة',
+          data:[66,57,64,66,86,69,66,68],
+          backgroundColor:['rgba(217,119,6,0.85)','rgba(22,163,74,0.85)','rgba(22,163,74,0.85)','rgba(22,163,74,0.85)','rgba(22,163,74,0.85)','rgba(220,38,38,0.85)','rgba(22,163,74,0.85)','rgba(220,38,38,0.85)'],
+          borderRadius:5
+        },
+        {
+          label:'الدرجة الكاملة',
+          data:[150,100,100,100,150,150,100,150],
+          backgroundColor:'transparent', borderColor:COLORS.accent,
+          borderWidth:2, type:'line', pointRadius:4, borderDash:[5,5],
+          datalabels:{ display:false }
+        }
+      ]
+    },
+    options:{
+      ...chartDefaults, indexAxis:'y',
+      layout:{ padding:{ right:44 } },
+      scales:{ x:{min:0,max:175,ticks:{stepSize:25}}, y:{grid:{display:false},ticks:{font:{size:11}}} },
+      plugins:{
+        ...chartDefaults.plugins,
+        datalabels:{
+          anchor:'end', align:'right', offset:5,
+          color: ctx => ctx.datasetIndex===0 ? '#1a3a5c' : 'transparent',
+          font:{ family:'IBM Plex Sans Arabic, sans-serif', size:11, weight:'700' },
+          formatter:(v, ctx) => ctx.datasetIndex===0 ? v+' درجة' : ''
+        }
+      }
+    }
+  });
+
+  // ── EXCELLENCE PIE ────────────────────────────────────────────
+  const expCtx = document.getElementById('excellencePieChart');
+  if(expCtx) new Chart(expCtx, {
+    type:'doughnut',
+    data:{
+      labels:['المحقق (542 درجة)','المتبقي (458 درجة)'],
+      datasets:[{ data:[542,458], backgroundColor:[COLORS.excellent,'rgba(220,228,236,0.9)'], borderWidth:3, borderColor:'#fff' }]
+    },
+    options:{
+      ...chartDefaults,
+      plugins:{
+        ...chartDefaults.plugins, legend:{position:'bottom'},
+        datalabels:{
+          color: ctx => ctx.dataIndex===0 ? '#fff' : '#5a7a9a',
+          font:{ family:'IBM Plex Sans Arabic, sans-serif', size:12, weight:'700' },
+          formatter:(v) => v+'\nدرجة'
+        }
+      }
+    }
+  });
+
+  // ── MAP BAR — المحاور ذات مقياس % فقط ────────────────────────
+  const mbCtx = document.getElementById('mapBarChart');
+  if(mbCtx) new Chart(mbCtx, {
+    type:'bar',
+    data:{
+      labels:['الاستراتيجي\n(إنجاز أهداف)','التشغيلي\n(إنجاز مبادرات)','المالي\n(إنجاز موارد)','أداء المخاطر\n(نسبة منخفضة)','الحوكمة\n(نسبة التزام)'],
+      datasets:[{
+        label:'نسبة %',
+        data:[90.1, 83.6, 99.9, 84.1, 97.8],
+        backgroundColor:[COLORS.excellent,COLORS.good,COLORS.excellent,COLORS.good,COLORS.excellent],
+        borderRadius:8
+      }]
+    },
+    options:{
+      ...chartDefaults,
+      layout:{ padding:{ top:28 } },
+      scales:{
+        y:{ min:0, max:112, ticks:{callback:v=>v+'%',font:{size:11}}, grid:{color:'#e5eaf0'} },
+        x:{ grid:{display:false}, ticks:{font:{size:10}} }
+      },
+      plugins:{
+        ...chartDefaults.plugins, legend:{display:false},
+        datalabels:{
+          anchor:'end', align:'end', offset:4,
+          color:'#1a3a5c',
+          font:{ family:'IBM Plex Sans Arabic, sans-serif', size:13, weight:'700' },
+          formatter: v => v+'%'
+        }
+      }
+    }
+  });
+
+  // ── MAP EXCELLENCE STANDALONE ─────────────────────────────────
+  const mexCtx = document.getElementById('mapExcellenceChart');
+  if(mexCtx) new Chart(mexCtx, {
+    type:'bar',
+    data:{
+      labels:['الدرجة المحققة','المستهدف','الدرجة القصوى'],
+      datasets:[{
+        label:'درجة التميز المؤسسي',
+        data:[542, 500, 1000],
+        backgroundColor:[COLORS.excellent,'rgba(200,146,42,0.5)','rgba(200,200,200,0.3)'],
+        borderRadius:8
+      }]
+    },
+    options:{
+      ...chartDefaults,
+      layout:{ padding:{ top:34 } },
+      scales:{
+        y:{ min:0, max:1100, ticks:{stepSize:200,font:{size:11}}, grid:{color:'#e5eaf0'} },
+        x:{ grid:{display:false}, ticks:{font:{size:12}} }
+      },
+      plugins:{
+        ...chartDefaults.plugins, legend:{display:false},
+        datalabels:{
+          anchor:'end', align:'end', offset:4,
+          color:'#1a3a5c',
+          font:{ family:'IBM Plex Sans Arabic, sans-serif', size:13, weight:'700' },
+          formatter: (v,ctx) => {
+            const labels = ['542 درجة\n(108% من المستهدف)','500 درجة\n(المستهدف)','1000 درجة\n(الحد الأقصى)'];
+            return labels[ctx.dataIndex];
+          }
+        }
+      }
+    }
+  });
+}
+
+// ================================================================
+// INIT
+// ================================================================
+document.addEventListener('DOMContentLoaded', function() {
+  buildDeptTable();
+  initCharts();
+});
 </script>
 </body>
 </html>
